@@ -33,7 +33,7 @@ export default function ShoppingCart() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+        <Button variant="ghost" size="icon" className="relative text-foreground hover:bg-foreground/10 hover:text-foreground">
           <ShoppingCartIcon className="h-6 w-6" />
           {itemCount > 0 && (
             <Badge

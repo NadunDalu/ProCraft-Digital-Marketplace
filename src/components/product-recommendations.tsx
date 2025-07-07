@@ -51,7 +51,7 @@ export default function ProductRecommendations() {
   if (isLoading) {
     return (
       <div>
-        <h2 className="font-headline text-3xl font-bold tracking-tight text-primary-foreground mb-6 flex items-center">
+        <h2 className="font-headline text-3xl font-bold tracking-tight text-foreground mb-6 flex items-center">
           <Sparkles className="mr-3 h-8 w-8 text-accent" />
           Recommended For You
         </h2>
@@ -76,7 +76,7 @@ export default function ProductRecommendations() {
 
   return (
     <div>
-      <h2 className="font-headline text-3xl font-bold tracking-tight text-primary-foreground mb-6 flex items-center">
+      <h2 className="font-headline text-3xl font-bold tracking-tight text-foreground mb-6 flex items-center">
         <Sparkles className="mr-3 h-8 w-8 text-accent" />
         Recommended For You
       </h2>
