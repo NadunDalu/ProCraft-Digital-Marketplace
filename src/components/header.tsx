@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import ShoppingCart from './shopping-cart';
 import { CodeXml } from 'lucide-react';
 
 export default function Header() {
@@ -13,9 +12,6 @@ export default function Header() {
           </span>
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className="flex items-center space-x-1">
-            <ShoppingCart />
-          </nav>
         </div>
       </div>
     </header>

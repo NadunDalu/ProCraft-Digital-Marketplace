@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge';
 import { Star, Tag } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
-import AddToCartButton from './add-to-cart-button';
+import { Button } from './ui/button';
 
 type ProductCardProps = {
   product: Product;
@@ -66,7 +66,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             </p>
           )}
         </div>
-        <AddToCartButton product={product} />
+        <Button asChild>
+          <Link href={`/products/${product.id}`}>View Details</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

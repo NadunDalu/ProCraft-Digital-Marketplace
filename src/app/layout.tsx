@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { CartProvider } from '@/hooks/use-cart';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -32,11 +31,9 @@ export default function RootLayout({
           'flex flex-col'
         )}
       >
-        <CartProvider>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-        </CartProvider>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
         <Toaster />
       </body>
     </html>
