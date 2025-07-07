@@ -8,7 +8,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-12">
       <div className="text-center">
         <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-          About ProCraft Digital Marketplace
+          About ProCraft Services
         </h1>
         <p className="mt-4 text-lg text-foreground/80 max-w-3xl mx-auto">
           We are dedicated to providing the highest quality digital tools and educational resources to empower creators, developers, and professionals around the globe.

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CodeXml } from 'lucide-react';
+import { Component } from 'lucide-react';
 import { buttonVariants } from './ui/button';
 import { cn } from '@/lib/utils';
 
@@ -13,9 +13,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <CodeXml className="h-6 w-6 text-foreground" />
+          <Component className="h-6 w-6 text-primary" />
           <span className="font-bold font-headline text-lg tracking-wider text-foreground">
-            ProCraft
+            ProCraft Services
           </span>
         </Link>
         <nav className="hidden md:flex items-center space-x-2">

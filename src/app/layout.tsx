@@ -6,7 +6,7 @@ import Footer from '@/components/footer';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'ProCraft Digital Marketplace',
+  title: 'ProCraft Services',
   description: 'Your one-stop shop for digital tools and courses.',
 };
 
