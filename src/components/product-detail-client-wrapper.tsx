@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { Product } from '@/lib/products';
 import { useCart } from '@/hooks/use-cart';
-import { useToast } from './ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from './ui/button';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
 
