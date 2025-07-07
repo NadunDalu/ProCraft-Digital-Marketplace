@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { CodeXml } from 'lucide-react';
+import { buttonVariants } from './ui/button';
+import { cn } from '@/lib/utils';
 
 export default function Header() {
   return (
@@ -11,6 +13,17 @@ export default function Header() {
             ProCraft
           </span>
         </Link>
+        <nav className="hidden md:flex items-center space-x-2">
+          <Link href="/" className={cn(buttonVariants({ variant: 'ghost' }), "text-foreground")}>
+            Home
+          </Link>
+          <Link href="/about" className={cn(buttonVariants({ variant: 'ghost' }), "text-foreground")}>
+            About Us
+          </Link>
+          <Link href="/contact" className={cn(buttonVariants({ variant: 'ghost' }), "text-foreground")}>
+            Contact
+          </Link>
+        </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
         </div>
       </div>
