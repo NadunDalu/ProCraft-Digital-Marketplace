@@ -4,6 +4,11 @@ import { buttonVariants } from './ui/button';
 import { cn } from '@/lib/utils';
 
 export default function Header() {
+  const navLinkClasses = cn(
+    buttonVariants({ variant: 'ghost' }),
+    "text-foreground hover:bg-primary hover:text-primary-foreground"
+  );
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -14,13 +19,13 @@ export default function Header() {
           </span>
         </Link>
         <nav className="hidden md:flex items-center space-x-2">
-          <Link href="/" className={cn(buttonVariants({ variant: 'ghost' }), "text-foreground")}>
+          <Link href="/" className={navLinkClasses}>
             Home
           </Link>
-          <Link href="/about" className={cn(buttonVariants({ variant: 'ghost' }), "text-foreground")}>
+          <Link href="/about" className={navLinkClasses}>
             About Us
           </Link>
-          <Link href="/contact" className={cn(buttonVariants({ variant: 'ghost' }), "text-foreground")}>
+          <Link href="/contact" className={navLinkClasses}>
             Contact
           </Link>
         </nav>
