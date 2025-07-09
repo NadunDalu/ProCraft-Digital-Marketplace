@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="container py-8 flex flex-col md:flex-row items-center justify-between">
         <div className="mb-4 md:mb-0">
           <Image
-            src="https://placehold.co/120x32.png"
+            src="/images/logo.png"
             width={120}
             height={32}
             alt="ProCraft Services Logo"

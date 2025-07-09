@@ -14,7 +14,7 @@ export default function Header() {
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center">
           <Image 
-            src="https://placehold.co/120x32.png"
+            src="/images/logo.png"
             width={120}
             height={32}
             alt="ProCraft Services Logo"
