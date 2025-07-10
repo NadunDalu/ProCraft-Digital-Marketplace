@@ -14,12 +14,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
-
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,9 +30,6 @@ const formSchema = z.object({
 });
 
 export default function ContactPage() {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,17 +39,14 @@ export default function ContactPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    console.log(values);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    toast({
-      title: 'Message Sent!',
-      description: "We've received your message and will get back to you shortly.",
-    });
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const subject = encodeURIComponent(`Contact Form Submission from ${values.name}`);
+    const body = encodeURIComponent(
+      `Name: ${values.name}\nEmail: ${values.email}\n\nMessage:\n${values.message}`
+    );
+    const mailtoLink = `mailto:nadundaluwatta@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
     form.reset();
-    setIsSubmitting(false);
   }
 
   return (
@@ -85,7 +75,7 @@ export default function ContactPage() {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" {...field} disabled={isSubmitting} />
+                        <Input placeholder="John Doe" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -98,7 +88,7 @@ export default function ContactPage() {
                     <FormItem>
                       <FormLabel>Email Address</FormLabel>
                       <FormControl>
-                        <Input placeholder="you@example.com" {...field} disabled={isSubmitting} />
+                        <Input placeholder="you@example.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -116,22 +106,14 @@ export default function ContactPage() {
                           className="resize-none"
                           rows={5}
                           {...field}
-                          disabled={isSubmitting}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                   {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    'Send Message'
-                  )}
+                <Button type="submit" className="w-full">
+                   Send Message
                 </Button>
               </form>
             </Form>
