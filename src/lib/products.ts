@@ -1,6 +1,7 @@
 export type Product = {
   id: string;
   name: string;
+  category: string;
   description: string;
   longDescription: string;
   image: string;
@@ -16,6 +17,7 @@ const products: Product[] = [
   {
     id: 'chatgpt-plus',
     name: 'ChatGPT Plus Account',
+    category: 'AI & Productivity',
     description: '1-Month Subscription with enhanced features and priority access.',
     longDescription: 'Unlock the full potential of AI with a ChatGPT Plus account. Get faster response times, priority access to new features, and access to the more powerful GPT-4 model. Ideal for professionals, developers, and creators who need a reliable and advanced AI assistant.',
     image: 'https://placehold.co/600x400.png',
@@ -28,6 +30,7 @@ const products: Product[] = [
   {
     id: 'canva-pro',
     name: 'Canva Pro Account',
+    category: 'Design Tools',
     description: '1-Year Subscription for unlimited creative possibilities.',
     longDescription: 'Empower your creativity with Canva Pro. Access a massive library of templates, photos, and fonts. Features include one-click background remover, magic resize for any platform, and brand kits to maintain your visual identity. Perfect for marketers, designers, and small business owners.',
     image: 'https://placehold.co/600x400.png',
@@ -40,6 +43,7 @@ const products: Product[] = [
   {
     id: 'ccna-course',
     name: 'CCNA 200-301 Course',
+    category: 'Online Courses',
     description: 'Comprehensive video course to ace the CCNA certification exam.',
     longDescription: 'Prepare for the CCNA 200-301 exam with this in-depth video course. Covering all exam topics including network fundamentals, network access, IP connectivity, IP services, security fundamentals, and automation and programmability. Includes labs and practice exams.',
     image: 'https://placehold.co/600x400.png',
@@ -52,6 +56,7 @@ const products: Product[] = [
   {
     id: 'full-stack-dev-course',
     name: 'Full-Stack Web Dev Course',
+    category: 'Online Courses',
     description: 'Master front-end and back-end development with our project-based course.',
     longDescription: 'Become a full-stack developer by learning the most in-demand technologies. This course covers HTML, CSS, JavaScript, React, Node.js, Express, and databases like MongoDB and PostgreSQL. Build real-world projects and create a portfolio to showcase your skills.',
     image: 'https://placehold.co/600x400.png',
@@ -64,6 +69,7 @@ const products: Product[] = [
   {
     id: 'tryhackme-premium',
     name: 'Try Hack Me Premium',
+    category: 'Cybersecurity',
     description: '1-Year Premium access for hands-on cybersecurity training.',
     longDescription: 'Learn cybersecurity through gamified labs and challenges. Try Hack Me Premium unlocks all learning paths and rooms, giving you access to a vast range of topics from ethical hacking to digital forensics. Perfect for beginners and seasoned professionals looking to sharpen their skills.',
     image: 'https://placehold.co/600x400.png',
@@ -76,6 +82,7 @@ const products: Product[] = [
    {
     id: 'ui-ux-design-course',
     name: 'UI/UX Design Masterclass',
+    category: 'Online Courses',
     description: 'Learn to design beautiful and user-friendly interfaces from scratch.',
     longDescription: 'This comprehensive masterclass covers the entire design process, from user research and wireframing to prototyping and usability testing. Learn industry-standard tools like Figma and Adobe XD, and build a portfolio of compelling design projects.',
     image: 'https://placehold.co/600x400.png',
@@ -93,4 +100,9 @@ export function getProducts(): Product[] {
 
 export function getProductById(id: string): Product | undefined {
   return products.find(p => p.id === id);
+}
+
+export function getCategories(): string[] {
+  const categories = products.map(p => p.category);
+  return ['All', ...Array.from(new Set(categories))];
 }
