@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 import type { Product } from '@/lib/products';
 import { Button } from './ui/button';
 import { ShoppingBag } from 'lucide-react';
-import { PurchaseForm } from './purchase-form';
+import Link from 'next/link';
 
 const BROWSING_HISTORY_KEY = 'procraft-browsing-history';
 const MAX_HISTORY_LENGTH = 10;
+const WHATSAPP_LINK = 'https://wa.me/message/4EMAE4VL2K5DM1';
 
 type ProductDetailClientWrapperProps = {
   product: Product;
@@ -26,15 +27,16 @@ export default function ProductDetailClientWrapper({ product }: ProductDetailCli
   }, [product.id]);
 
   return (
-    <PurchaseForm product={product}>
-      <Button
-        size="lg"
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg"
-        aria-label={`Buy ${product.name} now`}
-      >
+    <Button
+      asChild
+      size="lg"
+      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg"
+      aria-label={`Buy ${product.name} now`}
+    >
+      <Link href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
         <ShoppingBag className="mr-2 h-5 w-5" />
         Buy Now
-      </Button>
-    </PurchaseForm>
+      </Link>
+    </Button>
   );
 }
