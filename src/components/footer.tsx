@@ -61,6 +61,7 @@ export default function Footer() {
             <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <TikTokIcon className="h-6 w-6" />
                 <span className="sr-only">TikTok</span>
+                //commnt
             </a>
         </div>
       </div>
