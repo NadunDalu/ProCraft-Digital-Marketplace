@@ -5,8 +5,7 @@ import { getCategories, type Product } from '@/lib/products';
 import ProductCard from './product-card';
 import { Input } from './ui/input';
 import { Search } from 'lucide-react';
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { Label } from './ui/label';
+import { Button } from './ui/button';
 
 type ProductListingsProps = {
   products: Product[];
@@ -43,19 +42,17 @@ export default function ProductListings({ products }: ProductListingsProps) {
         </div>
       </div>
 
-      <div className="flex justify-center mb-8">
-        <RadioGroup
-          defaultValue="All"
-          onValueChange={setSelectedCategory}
-          className="flex flex-wrap gap-4 justify-center"
-        >
-          {categories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <RadioGroupItem value={category} id={`category-${category}`} />
-              <Label htmlFor={`category-${category}`} className="cursor-pointer hover:text-primary">{category}</Label>
-            </div>
-          ))}
-        </RadioGroup>
+      <div className="flex justify-center flex-wrap gap-2 mb-8">
+        {categories.map((category) => (
+          <Button
+            key={category}
+            variant={selectedCategory === category ? 'default' : 'outline'}
+            onClick={() => setSelectedCategory(category)}
+            className="rounded-full"
+          >
+            {category}
+          </Button>
+        ))}
       </div>
 
       {filteredProducts.length > 0 ? (
