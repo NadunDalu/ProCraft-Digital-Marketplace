@@ -10,7 +10,6 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
-  SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { LayoutGrid, Gift, Package } from 'lucide-react';
 import Link from 'next/link';
@@ -37,7 +36,6 @@ export default function AdminLayout({
                     alt="ProCraft Services Logo"
                     data-ai-hint="logo"
                 />
-                <SidebarTrigger />
             </div>
           </SidebarHeader>
           <SidebarContent>
