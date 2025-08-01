@@ -6,6 +6,8 @@ import { Star, Tag, CheckCircle2 } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import ProductDetailClientWrapper from '@/components/product-detail-client-wrapper';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 type ProductPageProps = {
   params: {
@@ -25,6 +27,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
+      <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
           <div className="bg-card rounded-lg overflow-hidden shadow-lg">
@@ -100,6 +103,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

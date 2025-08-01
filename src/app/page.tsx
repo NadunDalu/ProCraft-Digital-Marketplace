@@ -2,11 +2,15 @@ import { getProducts } from '@/lib/products';
 import ProductListings from '@/components/product-listings';
 import ProductRecommendations from '@/components/product-recommendations';
 import { Separator } from '@/components/ui/separator';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 export default function Home() {
   const products = getProducts();
 
   return (
+    <>
+    <Header />
     <div className="container mx-auto px-4 py-8">
       <div className="text-center py-12">
         <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tight text-foreground">
@@ -23,5 +27,7 @@ export default function Home() {
 
       <ProductRecommendations />
     </div>
+    <Footer />
+    </>
   );
 }

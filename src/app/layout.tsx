@@ -4,6 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { cn } from '@/lib/utils';
+import { CartProvider } from '@/hooks/use-cart';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: 'ProCraft Services',
@@ -31,10 +33,11 @@ export default function RootLayout({
           'flex flex-col'
         )}
       >
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <CartProvider>
+            {children}
+        </CartProvider>
         <Toaster />
+        <SpeedInsights/>
       </body>
     </html>
   );

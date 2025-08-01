@@ -12,10 +12,9 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { LayoutGrid, Gift, Package, Home } from 'lucide-react';
+import { LayoutGrid, Gift, Package } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 export default function AdminLayout({
@@ -24,13 +23,6 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-
-  const getPageTitle = () => {
-    if (pathname === '/admin') return 'Dashboard';
-    if (pathname.startsWith('/admin/products')) return 'Products';
-    if (pathname.startsWith('/admin/giveaways')) return 'Giveaways';
-    return 'Admin';
-  }
 
   return (
     <SidebarProvider>
@@ -90,7 +82,7 @@ export default function AdminLayout({
           </SidebarContent>
         </Sidebar>
         <SidebarInset>
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow p-6">{children}</main>
         </SidebarInset>
       </div>
     </SidebarProvider>

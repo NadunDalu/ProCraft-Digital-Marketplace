@@ -13,6 +13,8 @@ import {
 import Autoplay from 'embla-carousel-autoplay';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import React from 'react';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 export default function GiveawaysPage() {
   const plugin = React.useRef(
@@ -22,6 +24,8 @@ export default function GiveawaysPage() {
   const giveaway = giveaways[0];
 
   return (
+    <>
+    <Header />
     <div className="container mx-auto px-4 py-12">
       <div className="text-center">
         <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-foreground">
@@ -119,6 +123,8 @@ export default function GiveawaysPage() {
         </Carousel>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

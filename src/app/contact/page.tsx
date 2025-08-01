@@ -16,6 +16,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -50,6 +52,8 @@ export default function ContactPage() {
   }
 
   return (
+    <>
+    <Header />
     <div className="container mx-auto px-4 py-12">
       <div className="text-center">
         <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-foreground">
@@ -143,5 +147,7 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
