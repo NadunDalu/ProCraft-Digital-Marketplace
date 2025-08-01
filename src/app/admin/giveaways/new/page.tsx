@@ -32,7 +32,14 @@ const formSchema = z.object({
   description: z.string().min(10, {
     message: 'Description must be at least 10 characters.',
   }),
-  imageUrl: z.string().url({ message: 'Please enter a valid URL.' }),
+  image: z
+    .custom<FileList>()
+    .refine((files) => files?.length > 0, 'An image is required.')
+    .refine((files) => files?.[0]?.size <= 5000000, `Max file size is 5MB.`)
+    .refine(
+      (files) => ['image/jpeg', 'image/png', 'image/webp'].includes(files?.[0]?.type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    ),
   endDate: z.date({
     required_error: 'An end date is required.',
   }),
@@ -47,12 +54,15 @@ export default function NewGiveawayPage() {
     defaultValues: {
       title: '',
       description: '',
-      imageUrl: '',
+      image: undefined,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log({
+        ...values,
+        image: values.image[0].name,
+    });
     toast({
         title: "Giveaway created!",
         description: "The new giveaway has been successfully added.",
@@ -106,12 +116,19 @@ export default function NewGiveawayPage() {
               />
               <FormField
                 control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
+                name="image"
+                render={({ field: { onChange, value, ...rest } }) => (
                   <FormItem>
-                    <FormLabel>Image URL</FormLabel>
+                    <FormLabel>Giveaway Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://placehold.co/800x400.png" {...field} />
+                      <Input 
+                        type="file" 
+                        accept="image/png, image/jpeg, image/webp"
+                        onChange={(event) => {
+                          onChange(event.target.files);
+                        }}
+                        {...rest}
+                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
