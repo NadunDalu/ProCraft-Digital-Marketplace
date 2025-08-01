@@ -12,7 +12,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { LayoutGrid, Gift, Package, Home, Settings } from 'lucide-react';
+import { LayoutGrid, Gift, Package, Home } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  const getPageTitle = () => {
+    if (pathname === '/admin') return 'Dashboard';
+    if (pathname.startsWith('/admin/products')) return 'Products';
+    if (pathname.startsWith('/admin/giveaways')) return 'Giveaways';
+    return 'Admin';
+  }
 
   return (
     <SidebarProvider>
@@ -83,13 +90,13 @@ export default function AdminLayout({
           </SidebarContent>
         </Sidebar>
         <SidebarInset>
-            <header className="flex justify-between items-center p-4 border-b">
-                <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+            <header className="flex justify-between items-center p-4 border-b bg-card">
+                <h1 className="text-2xl font-bold font-headline">{getPageTitle()}</h1>
                 <Button variant="outline" asChild>
-                    <Link href="/"> <Home className="mr-2 h-4 w-4" /> Go to site</Link>
+                    <Link href="/"> <Home className="mr-2 h-4 w-4" /> Go to Site</Link>
                 </Button>
             </header>
-            <main className="p-4">{children}</main>
+            <main className="p-4 bg-muted/40 flex-grow">{children}</main>
         </SidebarInset>
       </div>
     </SidebarProvider>
