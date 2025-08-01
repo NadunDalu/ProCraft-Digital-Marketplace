@@ -90,13 +90,7 @@ export default function AdminLayout({
           </SidebarContent>
         </Sidebar>
         <SidebarInset>
-            <header className="flex justify-between items-center p-4 border-b bg-card">
-                <h1 className="text-2xl font-bold font-headline">{getPageTitle()}</h1>
-                <Button variant="outline" asChild>
-                    <Link href="/"> <Home className="mr-2 h-4 w-4" /> Go to Site</Link>
-                </Button>
-            </header>
-            <main className="p-4 bg-muted/40 flex-grow">{children}</main>
+            <main className="flex-grow">{children}</main>
         </SidebarInset>
       </div>
     </SidebarProvider>
