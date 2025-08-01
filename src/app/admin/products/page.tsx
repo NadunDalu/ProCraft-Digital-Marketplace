@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { formatCurrency } from '@/lib/utils';
 import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
 
 export default function AdminProductsPage() {
   const products = getProducts();
@@ -21,9 +22,11 @@ export default function AdminProductsPage() {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Products</CardTitle>
-        <Button size="sm">
+        <Button size="sm" asChild>
+          <Link href="/admin/products/new">
             <PlusCircle className="mr-2 h-4 w-4" />
             Add Product
+          </Link>
         </Button>
       </CardHeader>
       <CardContent>
