@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -17,6 +18,8 @@ export default function GiveawaysPage() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
+  
+  const giveaway = giveaways[0];
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -25,15 +28,14 @@ export default function GiveawaysPage() {
           ProCraft Giveaways
         </h1>
         <p className="mt-4 text-lg text-foreground/80 max-w-3xl mx-auto">
-          Check out our exciting giveaways and stand a chance to win premium digital products and courses. Good luck!
+          Check out our exciting giveaway and stand a chance to win a premium digital product. Good luck!
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-        {giveaways.map((giveaway) => (
-          <Card key={giveaway.id} className="flex flex-col">
+      <div className="mt-12 flex justify-center">
+        <Card key={giveaway.id} className="flex flex-col max-w-2xl w-full">
             <CardHeader>
-              <div className="relative h-56 w-full">
+              <div className="relative h-64 w-full">
                 <Image
                   src={giveaway.image}
                   alt={giveaway.title}
@@ -45,8 +47,8 @@ export default function GiveawaysPage() {
               </div>
             </CardHeader>
             <CardContent className="flex-grow">
-              <CardTitle className="font-headline text-xl">{giveaway.title}</CardTitle>
-              <p className="text-muted-foreground mt-2">{giveaway.description}</p>
+              <CardTitle className="font-headline text-2xl">{giveaway.title}</CardTitle>
+              <p className="text-muted-foreground mt-2 text-base">{giveaway.description}</p>
               <div className="mt-4 space-y-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-primary" />
@@ -55,13 +57,12 @@ export default function GiveawaysPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">
-                <Gift className="mr-2 h-4 w-4" />
+              <Button className="w-full text-lg py-6">
+                <Gift className="mr-2 h-5 w-5" />
                 Enter Giveaway
               </Button>
             </CardFooter>
           </Card>
-        ))}
       </div>
       
       <div className="mt-20">
@@ -109,23 +110,9 @@ const giveaways = [
   {
     id: 1,
     title: 'Lifetime Canva Pro Subscription',
-    description: 'Win a lifetime subscription to Canva Pro and unlock your creative potential.',
-    image: 'https://placehold.co/600x400.png',
+    description: 'Win a lifetime subscription to Canva Pro and unlock your creative potential. Get access to millions of premium assets and tools to bring your ideas to life.',
+    image: 'https://placehold.co/800x400.png',
     endDate: 'August 31, 2024',
-  },
-  {
-    id: 2,
-    title: 'Full-Stack Developer Course Bundle',
-    description: 'Get access to our complete Full-Stack Web Development and UI/UX Design courses.',
-    image: 'https://placehold.co/600x400.png',
-    endDate: 'September 15, 2024',
-  },
-  {
-    id: 3,
-    title: 'ChatGPT Plus for a Year',
-    description: 'Enjoy a full year of ChatGPT Plus, on us! Get priority access to new features.',
-    image: 'https://placehold.co/600x400.png',
-    endDate: 'September 30, 2024',
   },
 ];
 
