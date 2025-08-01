@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Gift, Calendar, Users, Trophy } from 'lucide-react';
+import { Gift, Calendar, Trophy } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -51,10 +51,6 @@ export default function GiveawaysPage() {
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-primary" />
                   <span>Ends on: {giveaway.endDate}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-primary" />
-                  <span>{giveaway.participants} participants</span>
                 </div>
               </div>
             </CardContent>
@@ -116,7 +112,6 @@ const giveaways = [
     description: 'Win a lifetime subscription to Canva Pro and unlock your creative potential.',
     image: 'https://placehold.co/600x400.png',
     endDate: 'August 31, 2024',
-    participants: 1204,
   },
   {
     id: 2,
@@ -124,7 +119,6 @@ const giveaways = [
     description: 'Get access to our complete Full-Stack Web Development and UI/UX Design courses.',
     image: 'https://placehold.co/600x400.png',
     endDate: 'September 15, 2024',
-    participants: 876,
   },
   {
     id: 3,
@@ -132,7 +126,6 @@ const giveaways = [
     description: 'Enjoy a full year of ChatGPT Plus, on us! Get priority access to new features.',
     image: 'https://placehold.co/600x400.png',
     endDate: 'September 30, 2024',
-    participants: 2531,
   },
 ];
 
