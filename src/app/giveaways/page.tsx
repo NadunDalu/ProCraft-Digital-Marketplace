@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Gift, Calendar, Trophy } from 'lucide-react';
+import { Gift, Calendar, Trophy, Megaphone } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -30,6 +30,22 @@ export default function GiveawaysPage() {
         <p className="mt-4 text-lg text-foreground/80 max-w-3xl mx-auto">
           Check out our exciting giveaway and stand a chance to win a premium digital product. Good luck!
         </p>
+      </div>
+
+      <div className="mt-12">
+        <Card className="bg-primary/10 border-primary/20">
+          <CardHeader>
+            <CardTitle className="font-headline text-center text-2xl text-primary flex items-center justify-center gap-2">
+              <Megaphone className="h-6 w-6" />
+              Big News!
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-center text-lg text-foreground/90">
+              We're thrilled to launch our new giveaway series! Each month, we'll be offering an exclusive digital product to one lucky winner. Stay tuned for more amazing prizes and opportunities.
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="mt-12 flex justify-center">
