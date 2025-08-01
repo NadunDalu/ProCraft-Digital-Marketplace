@@ -1,4 +1,5 @@
 
+
 import {
   Table,
   TableHeader,
@@ -11,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
 
 const giveaways = [
     {
@@ -26,9 +28,11 @@ export default function AdminGiveawaysPage() {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Giveaways</CardTitle>
-         <Button size="sm">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Giveaway
+         <Button size="sm" asChild>
+            <Link href="/admin/giveaways/new">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Giveaway
+            </Link>
         </Button>
       </CardHeader>
       <CardContent>
@@ -71,4 +75,3 @@ export default function AdminGiveawaysPage() {
     </Card>
   );
 }
-
