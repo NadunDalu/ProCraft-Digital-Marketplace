@@ -38,10 +38,6 @@ export default function Header() {
           </Link>
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <Link href="/admin" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-            <User className="mr-2 h-4 w-4" />
-            Admin
-          </Link>
         </div>
       </div>
     </header>
