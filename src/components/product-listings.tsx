@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCategories, type Product } from '@/lib/products';
 import ProductCard from './product-card';
 import { Input } from './ui/input';
@@ -14,7 +14,15 @@ type ProductListingsProps = {
 export default function ProductListings({ products }: ProductListingsProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const categories = getCategories();
+  const [categories, setCategories] = useState<string[]>(['All']);
+
+  useEffect(() => {
+    async function fetchCategories() {
+        const fetchedCategories = await getCategories();
+        setCategories(fetchedCategories);
+    }
+    fetchCategories();
+  }, []);
 
   const filteredProducts = products.filter(product => {
     const matchesSearch =

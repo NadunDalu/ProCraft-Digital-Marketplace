@@ -32,8 +32,8 @@ export default function ProductRecommendations() {
         });
 
         if (result && result.recommendations) {
-          const recommendedProducts = result.recommendations
-            .map(id => getProductById(id))
+          const recommendedProducts = (await Promise.all(result.recommendations
+            .map(id => getProductById(id))))
             .filter((p): p is Product => p !== undefined);
           setRecommendations(recommendedProducts);
         }

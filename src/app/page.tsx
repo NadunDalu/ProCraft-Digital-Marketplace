@@ -5,8 +5,8 @@ import { Separator } from '@/components/ui/separator';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 
-export default function Home() {
-  const products = getProducts();
+export default async function Home() {
+  const products = await getProducts();
 
   return (
     <>
