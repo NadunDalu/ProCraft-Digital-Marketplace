@@ -1,3 +1,4 @@
+
 import { getProducts } from '@/lib/products';
 import ProductListings from '@/components/product-listings';
 import ProductRecommendations from '@/components/product-recommendations';
