@@ -41,19 +41,22 @@ function AdminHeader() {
 function AuthGuard({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isChecking, setIsChecking] = useState(true);
 
     useEffect(() => {
-        const isAuthenticated = sessionStorage.getItem('admin-authenticated') === 'true';
+        const authenticated = sessionStorage.getItem('admin-authenticated') === 'true';
+        setIsAuthenticated(authenticated);
+        setIsChecking(false);
+    }, []);
 
-        if (!isAuthenticated && pathname !== '/admin/login') {
+    useEffect(() => {
+        if (!isChecking && !isAuthenticated && pathname !== '/admin/login') {
             router.replace('/admin/login');
-        } else {
-            setIsChecking(false);
         }
-    }, [pathname, router]);
+    }, [isChecking, isAuthenticated, pathname, router]);
 
-    if (isChecking && pathname !== '/admin/login') {
+    if (isChecking) {
         return (
              <div className="flex h-screen w-full items-center justify-center">
                 <div className="text-xl">Loading...</div>
