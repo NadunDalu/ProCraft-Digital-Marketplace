@@ -64,6 +64,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         );
     }
     
+    if (!isAuthenticated && pathname !== '/admin/login') {
+      return null;
+    }
+    
     return <>{children}</>;
 }
 
