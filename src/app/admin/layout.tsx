@@ -53,7 +53,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         }
     }, [pathname, router]);
 
-    if (isChecking) {
+    if (isChecking && pathname !== '/admin/login') {
         return (
              <div className="flex h-screen w-full items-center justify-center">
                 <div className="text-xl">Loading...</div>
@@ -61,10 +61,6 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         );
     }
     
-    if (pathname === '/admin/login') {
-        return <>{children}</>;
-    }
-
     return <>{children}</>;
 }
 
