@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { LayoutGrid, Gift, Package } from 'lucide-react';
+import { LayoutGrid, Gift, Package, Megaphone } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -40,22 +40,21 @@ function AdminHeader() {
 function AuthGuard({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
-    const [isChecking, setIsChecking] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    const [isMounted, setIsMounted] = useState(false);
+    
     useEffect(() => {
-        const authenticated = sessionStorage.getItem('admin-authenticated') === 'true';
-        setIsAuthenticated(authenticated);
-        setIsChecking(false);
+        setIsMounted(true);
     }, []);
 
+    const isAuthenticated = isMounted && sessionStorage.getItem('admin-authenticated') === 'true';
+
     useEffect(() => {
-        if (!isChecking && !isAuthenticated && pathname !== '/admin/login') {
+        if (isMounted && !isAuthenticated && pathname !== '/admin/login') {
             router.replace('/admin/login');
         }
-    }, [isChecking, isAuthenticated, pathname, router]);
+    }, [isMounted, isAuthenticated, pathname, router]);
 
-    if (isChecking) {
+    if (!isMounted) {
         return (
              <div className="flex h-screen w-full items-center justify-center">
                 <div className="text-xl">Loading...</div>
@@ -139,6 +138,18 @@ export default function AdminLayout({
                       <Link href="/admin/giveaways">
                         <Gift />
                         <span>Giveaways</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                   <SidebarMenuItem>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname.startsWith('/admin/winner-banner')}
+                       tooltip="Winner Banner"
+                    >
+                      <Link href="/admin/winner-banner">
+                        <Megaphone />
+                        <span>Winner Banner</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

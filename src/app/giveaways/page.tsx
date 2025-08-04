@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Gift, Calendar, Trophy, Megaphone } from 'lucide-react';
+import { Gift, Calendar, Trophy } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -12,17 +12,43 @@ import {
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const WINNER_BANNER_KEY = 'procraft-winner-banner';
+
+type WinnerBannerData = {
+    winnerName: string;
+    giveawayName: string;
+    winnerImage: string;
+}
 
 export default function GiveawaysPage() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
+
+  const [latestWinner, setLatestWinner] = useState<WinnerBannerData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
+  useEffect(() => {
+    const storedData = localStorage.getItem(WINNER_BANNER_KEY);
+    if (storedData) {
+      setLatestWinner(JSON.parse(storedData));
+    } else {
+      // Set default if nothing is in local storage
+      setLatestWinner({
+        winnerName: 'John D.',
+        giveawayName: 'Canva Pro',
+        winnerImage: 'https://placehold.co/100x100.png'
+      });
+    }
+    setIsLoading(false);
+  }, []);
+
   const giveaway = giveaways[0];
-  const latestWinner = winners[0];
 
   return (
     <>
@@ -46,14 +72,23 @@ export default function GiveawaysPage() {
             </CardTitle>
           </CardHeader>
            <CardContent className="flex flex-col items-center text-center gap-4">
-              <Avatar className="w-24 h-24 border-4 border-primary/20">
-                <AvatarImage src={latestWinner.avatar} alt={latestWinner.name} data-ai-hint="person smiling" />
-                <AvatarFallback>{latestWinner.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <p className="text-lg text-foreground/90">
-                Congratulations to <span className="font-bold text-primary">{latestWinner.name}</span> for winning the <span className="font-semibold">{latestWinner.prize}</span> giveaway!
-                Stay tuned for our next exciting prize.
-              </p>
+              {isLoading ? (
+                <>
+                    <Skeleton className="w-24 h-24 rounded-full" />
+                    <Skeleton className="h-6 w-3/4" />
+                </>
+              ) : latestWinner && (
+                <>
+                  <Avatar className="w-24 h-24 border-4 border-primary/20">
+                    <AvatarImage src={latestWinner.winnerImage} alt={latestWinner.winnerName} data-ai-hint="person smiling" />
+                    <AvatarFallback>{latestWinner.winnerName.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <p className="text-lg text-foreground/90">
+                    Congratulations to <span className="font-bold text-primary">{latestWinner.winnerName}</span> for winning the <span className="font-semibold">{latestWinner.giveawayName}</span> giveaway!
+                    Stay tuned for our next exciting prize.
+                  </p>
+                </>
+              )}
             </CardContent>
         </Card>
       </div>
