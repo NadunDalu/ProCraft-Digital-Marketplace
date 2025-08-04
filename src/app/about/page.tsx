@@ -1,7 +1,7 @@
+
 import Image from 'next/image';
 import { Building, Target, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 
@@ -71,33 +71,8 @@ export default function AboutPage() {
           </CardContent>
         </Card>
       </div>
-      
-      <div className="my-16">
-        <h2 className="text-center font-headline text-3xl font-bold mb-8">Meet the Team</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map(member => (
-            <Card key={member.name} className="text-center">
-              <CardContent className="pt-6">
-                <Avatar className="w-24 h-24 mx-auto mb-4">
-                  <AvatarImage src={member.avatar} alt={member.name} data-ai-hint="professional headshot" />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <h3 className="text-lg font-semibold">{member.name}</h3>
-                <p className="text-primary">{member.role}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
     </div>
     <Footer />
     </>
   );
 }
-
-const teamMembers = [
-  { name: 'Alex Johnson', role: 'Founder & CEO', avatar: 'https://placehold.co/100x100.png' },
-  { name: 'Maria Garcia', role: 'Head of Product', avatar: 'https://placehold.co/100x100.png' },
-  { name: 'James Smith', role: 'Lead Developer', avatar: 'https://placehold.co/100x100.png' },
-  { name: 'Emily White', role: 'Marketing Director', avatar: 'https://placehold.co/100x100.png' },
-];
