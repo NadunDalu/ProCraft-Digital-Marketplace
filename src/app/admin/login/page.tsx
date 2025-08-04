@@ -32,7 +32,6 @@ export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,7 +42,6 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -54,15 +52,11 @@ export default function LoginPage() {
       const idToken = await userCredential.user.getIdToken();
 
       // Send ID token to backend to set cookie
-      const response = await fetch('/api/auth/session', {
+      await fetch('/api/auth/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: idToken }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to create server session.');
-      }
 
       toast({ title: 'Login successful' });
       router.replace('/admin');
@@ -72,8 +66,6 @@ export default function LoginPage() {
         title: 'Login failed',
         description: error.message || 'Invalid credentials.',
       });
-    } finally {
-        setIsLoading(false);
     }
   }
 
@@ -100,7 +92,7 @@ export default function LoginPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" type="email" {...field} disabled={isLoading} />
+                    <Input placeholder="Enter your email" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -118,7 +110,6 @@ export default function LoginPage() {
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Enter your password"
                         {...field}
-                        disabled={isLoading}
                       />
                       <Button
                         type="button"
@@ -126,7 +117,6 @@ export default function LoginPage() {
                         size="icon"
                         className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        disabled={isLoading}
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
@@ -136,9 +126,9 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full">
               <ShieldCheck className="mr-2 h-5 w-5" />
-              {isLoading ? 'Logging in...' : 'Login'}
+              Login
             </Button>
           </form>
         </Form>
