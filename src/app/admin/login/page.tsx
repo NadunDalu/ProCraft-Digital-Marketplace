@@ -51,15 +51,22 @@ export default function LoginPage() {
 
       const idToken = await userCredential.user.getIdToken();
 
-      // Send ID token to backend to set cookie
-      await fetch('/api/auth/session', {
+      const res = await fetch('/api/auth/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: idToken }),
       });
 
-      toast({ title: 'Login successful' });
-      router.replace('/admin');
+      if (!res.ok) {
+        throw new Error('Session cookie could not be set.');
+      }
+
+      toast({ title: 'Login successful', description: 'Redirecting...' });
+
+      // ✅ Wait for the cookie to be set before redirecting
+      setTimeout(() => {
+        router.replace('/admin');
+      }, 300); // slight delay helps ensure cookie is processed
     } catch (error: any) {
       toast({
         variant: 'destructive',
