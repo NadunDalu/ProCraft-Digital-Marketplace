@@ -9,36 +9,29 @@ import {
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import { Card, CardContent } from '@/components/ui/card';
-import { Smartphone, Download, ArrowDown, Share, AppWindow } from 'lucide-react';
+import { Smartphone, Download, Share, AppWindow } from 'lucide-react';
+import Image from 'next/image';
 
 const instructions = [
   {
-    icon: <Smartphone className="h-8 w-8 text-primary" />,
+    icon: <Smartphone className="h-10 w-10 text-white" />,
     title: "Easy Access",
     description: "Get instant access to our store right from your home screen."
   },
   {
-    icon: <Download className="h-8 w-8 text-primary" />,
+    icon: <Download className="h-10 w-10 text-white" />,
     title: "Install on Any Device",
-    description: "Follow simple steps to install on your iOS or Android device."
+    description: "Follow simple steps for iOS or Android."
   },
   {
-    icon: (
-        <div className="flex items-center gap-2">
-            <span className="text-primary">Tap <Share className="inline h-5 w-5" /></span>
-        </div>
-    ),
+    icon: <Share className="h-10 w-10 text-white" />,
     title: "For iOS",
-    description: "Tap the 'Share' icon in Safari, then 'Add to Home Screen'."
+    description: "Tap the 'Share' icon, then 'Add to Home Screen'."
   },
   {
-    icon: (
-         <div className="flex items-center gap-2">
-            <span className="text-primary">Tap <AppWindow className="inline h-5 w-5" /></span>
-        </div>
-    ),
+    icon: <AppWindow className="h-10 w-10 text-white" />,
     title: "For Android",
-    description: "Tap the menu button in Chrome, then 'Install app'."
+    description: "Tap the menu button, then 'Install app'."
   },
 ];
 
@@ -63,11 +56,19 @@ export default function AddToHomeScreen() {
           {instructions.map((item, index) => (
             <CarouselItem key={index}>
               <div className="p-1 h-full">
-                <Card className="h-full bg-primary/10 border-primary/20">
-                  <CardContent className="flex flex-col items-center justify-center text-center p-6 gap-3 h-full">
+                <Card className="h-full bg-primary/10 border-none relative text-white overflow-hidden">
+                   <Image
+                      src="https://placehold.co/1200x300.png"
+                      alt="Add to home screen background"
+                      layout="fill"
+                      objectFit="cover"
+                      className="absolute inset-0 z-0 opacity-50"
+                      data-ai-hint="abstract technology"
+                    />
+                  <CardContent className="relative z-10 flex flex-col items-center justify-center text-center p-6 gap-3 h-[200px]">
                     <div>{item.icon}</div>
-                    <h3 className="font-headline text-lg font-semibold text-foreground">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    <h3 className="font-headline text-2xl font-semibold">{item.title}</h3>
+                    <p className="text-base text-white/80 max-w-sm">{item.description}</p>
                   </CardContent>
                 </Card>
               </div>
