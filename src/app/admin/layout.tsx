@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import {
@@ -41,8 +40,8 @@ function AdminHeader() {
 function AuthGuard({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isChecking, setIsChecking] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const authenticated = sessionStorage.getItem('admin-authenticated') === 'true';
