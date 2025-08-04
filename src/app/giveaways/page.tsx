@@ -45,12 +45,16 @@ export default function GiveawaysPage() {
               Latest Winner Announcement!
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-center text-lg text-foreground/90">
-              Congratulations to <span className="font-bold text-primary">{latestWinner.name}</span> for winning the <span className="font-semibold">{latestWinner.prize}</span> giveaway!
-              Stay tuned for our next exciting prize.
-            </p>
-          </CardContent>
+           <CardContent className="flex flex-col items-center text-center gap-4">
+              <Avatar className="w-24 h-24 border-4 border-primary/20">
+                <AvatarImage src={latestWinner.avatar} alt={latestWinner.name} data-ai-hint="person smiling" />
+                <AvatarFallback>{latestWinner.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <p className="text-lg text-foreground/90">
+                Congratulations to <span className="font-bold text-primary">{latestWinner.name}</span> for winning the <span className="font-semibold">{latestWinner.prize}</span> giveaway!
+                Stay tuned for our next exciting prize.
+              </p>
+            </CardContent>
         </Card>
       </div>
 
