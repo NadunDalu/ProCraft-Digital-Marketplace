@@ -1,10 +1,12 @@
 
+
 import { getProducts } from '@/lib/products';
 import ProductListings from '@/components/product-listings';
 import ProductRecommendations from '@/components/product-recommendations';
 import { Separator } from '@/components/ui/separator';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import AddToHomeScreen from '@/components/add-to-home-screen';
 
 export default async function Home() {
   const products = await getProducts();
@@ -21,6 +23,8 @@ export default async function Home() {
           Your one-stop shop for premium digital products and professional courses.
         </p>
       </div>
+
+      <AddToHomeScreen />
 
       <ProductListings products={products} />
       
