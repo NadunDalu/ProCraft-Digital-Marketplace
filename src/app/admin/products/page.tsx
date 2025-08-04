@@ -1,4 +1,6 @@
 
+'use client';
+
 import { getProducts, Product } from '@/lib/products';
 import {
   Table,
@@ -14,9 +16,33 @@ import { formatCurrency } from '@/lib/utils';
 import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 export default function AdminProductsPage() {
-  const products = getProducts();
+  const { toast } = useToast();
+  const [products, setProducts] = useState(getProducts());
+
+  const handleDelete = (id: string) => {
+    // In a real app, you'd call an API to delete the product
+    setProducts(products.filter(p => p.id !== id));
+    toast({
+        title: "Product Deleted",
+        description: "The product has been successfully removed.",
+        variant: "destructive"
+    })
+  }
 
   return (
     <Card>
@@ -53,20 +79,44 @@ export default function AdminProductsPage() {
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="icon">
-                      <Pencil className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
+                    <Button variant="outline" size="icon" asChild>
+                      <Link href={`/admin/products/edit/${product.id}`}>
+                        <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Link>
                     </Button>
-                    <Button variant="destructive" size="icon">
-                      <Trash2 className="h-4 w-4" />
-                      <span className="sr-only">Delete</span>
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                         <Button variant="destructive" size="icon">
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete this
+                            product from your catalog.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => handleDelete(product.id)}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+         {products.length === 0 && (
+            <div className="text-center py-12 text-muted-foreground">
+                No products found.
+            </div>
+        )}
       </CardContent>
     </Card>
   );
