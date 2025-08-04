@@ -22,6 +22,7 @@ export default function GiveawaysPage() {
   );
   
   const giveaway = giveaways[0];
+  const latestWinner = winners[0];
 
   return (
     <>
@@ -40,13 +41,14 @@ export default function GiveawaysPage() {
         <Card className="bg-primary/10 border-primary/20">
           <CardHeader>
             <CardTitle className="font-headline text-center text-2xl text-primary flex items-center justify-center gap-2">
-              <Megaphone className="h-6 w-6" />
-              Big News!
+              <Trophy className="h-6 w-6" />
+              Latest Winner Announcement!
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-center text-lg text-foreground/90">
-              We're thrilled to launch our new giveaway series! Each month, we'll be offering an exclusive digital product to one lucky winner. Stay tuned for more amazing prizes and opportunities.
+              Congratulations to <span className="font-bold text-primary">{latestWinner.name}</span> for winning the <span className="font-semibold">{latestWinner.prize}</span> giveaway!
+              Stay tuned for our next exciting prize.
             </p>
           </CardContent>
         </Card>
