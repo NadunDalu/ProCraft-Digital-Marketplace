@@ -15,7 +15,7 @@ export default async function AdminDashboardPage() {
   try {
     const user = await getAuth().verifyIdToken(token);
 
-    if (user.email !== 'admin@example.com') {
+    if (user.email !== 'adminscaty@procraft.com') {
       redirect('/admin/login');
     }
 
