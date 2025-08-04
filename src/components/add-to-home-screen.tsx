@@ -61,7 +61,7 @@ export default function AddToHomeScreen() {
       >
         <CarouselContent>
           {instructions.map((item, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <CarouselItem key={index}>
               <div className="p-1 h-full">
                 <Card className="h-full bg-primary/10 border-primary/20">
                   <CardContent className="flex flex-col items-center justify-center text-center p-6 gap-3 h-full">
