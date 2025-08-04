@@ -17,12 +17,16 @@ import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 function AdminHeader() {
   const router = useRouter();
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('admin-authenticated');
+  const handleLogout = async () => {
+    await auth.signOut();
+    // Also clear the server-side cookie
+    await fetch('/api/auth/session', { method: 'DELETE' });
     router.push('/admin/login');
   };
 
@@ -40,21 +44,28 @@ function AdminHeader() {
 function AuthGuard({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
-    const [isMounted, setIsMounted] = useState(false);
-    
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
     useEffect(() => {
-        setIsMounted(true);
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // To keep this simple, we'll just check if a user is logged in.
+                // For higher security, you could verify the user's claims (e.g., admin role) here.
+                setIsAuthenticated(true);
+            } else {
+                setIsAuthenticated(false);
+            }
+        });
+        return () => unsubscribe();
     }, []);
 
-    const isAuthenticated = isMounted && sessionStorage.getItem('admin-authenticated') === 'true';
-
     useEffect(() => {
-        if (isMounted && !isAuthenticated && pathname !== '/admin/login') {
+        if (isAuthenticated === false && pathname !== '/admin/login') {
             router.replace('/admin/login');
         }
-    }, [isMounted, isAuthenticated, pathname, router]);
+    }, [isAuthenticated, pathname, router]);
 
-    if (!isMounted) {
+    if (isAuthenticated === null) {
         return (
              <div className="flex h-screen w-full items-center justify-center">
                 <div className="text-xl">Loading...</div>
@@ -62,7 +73,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
         );
     }
     
-    if (!isAuthenticated && pathname !== '/admin/login') {
+    if (isAuthenticated === false && pathname !== '/admin/login') {
       return null;
     }
     
