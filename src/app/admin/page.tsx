@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Package, Gift } from 'lucide-react';
 
 export default async function AdminDashboardPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies(); // ✅ fixed
   const token = cookieStore.get('admin-auth')?.value;
 
   if (!token) {
