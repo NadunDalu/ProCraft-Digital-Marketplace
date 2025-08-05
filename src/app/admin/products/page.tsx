@@ -1,7 +1,7 @@
 
 'use client';
 
-import { getProducts, Product } from '@/lib/products';
+import { Product } from '@/lib/types';
 import {
   Table,
   TableHeader,
@@ -28,20 +28,43 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getProducts } from '@/lib/products';
+import { deleteProductAction } from '@/app/actions/product-actions';
+import { Skeleton } from '@/components/ui/skeleton';
+
 
 export default function AdminProductsPage() {
   const { toast } = useToast();
-  const [products, setProducts] = useState(getProducts());
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleDelete = (id: string) => {
-    // In a real app, you'd call an API to delete the product
-    setProducts(products.filter(p => p.id !== id));
-    toast({
-        title: "Product Deleted",
-        description: "The product has been successfully removed.",
-        variant: "destructive"
-    })
+  useEffect(() => {
+    async function loadProducts() {
+        setIsLoading(true);
+        const fetchedProducts = await getProducts();
+        setProducts(fetchedProducts);
+        setIsLoading(false);
+    }
+    loadProducts();
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    const result = await deleteProductAction(id);
+    if (result.success) {
+      setProducts(products.filter(p => p.id !== id));
+      toast({
+          title: "Product Deleted",
+          description: "The product has been successfully removed.",
+          variant: "destructive"
+      });
+    } else {
+        toast({
+            title: "Error",
+            description: result.error,
+            variant: "destructive"
+        });
+    }
   }
 
   return (
@@ -56,68 +79,87 @@ export default function AdminProductsPage() {
         </Button>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products.map((product: Product) => (
-              <TableRow key={product.id}>
-                <TableCell className="font-medium">{product.name}</TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>{formatCurrency(product.price)}</TableCell>
-                <TableCell>
-                  <Badge variant={product.salePrice ? "destructive" : "default"}>
-                    {product.salePrice ? 'On Sale' : 'Active'}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="icon" asChild>
-                      <Link href={`/admin/products/edit/${product.id}`}>
-                        <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Edit</span>
-                      </Link>
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                         <Button variant="destructive" size="icon">
-                            <Trash2 className="h-4 w-4" />
-                            <span className="sr-only">Delete</span>
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete this
-                            product from your catalog.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(product.id)}>Continue</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+        {isLoading ? (
+            <div className="space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-12 rounded-lg" />
+                  <div className="space-y-2 flex-grow">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
                   </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-         {products.length === 0 && (
-            <div className="text-center py-12 text-muted-foreground">
-                No products found.
+                  <Skeleton className="h-8 w-20" />
+                  <Skeleton className="h-8 w-20" />
+                </div>
+              ))}
             </div>
+        ) : (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {products.map((product: Product) => (
+                  <TableRow key={product.id}>
+                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell>{product.category}</TableCell>
+                    <TableCell>{formatCurrency(product.price)}</TableCell>
+                    <TableCell>
+                      <Badge variant={product.salePrice ? "destructive" : "default"}>
+                        {product.salePrice ? 'On Sale' : 'Active'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="icon" asChild>
+                          <Link href={`/admin/products/edit/${product.id}`}>
+                            <Pencil className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Link>
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="icon">
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Delete</span>
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete this
+                                product from your catalog.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(product.id)}>Continue</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {products.length === 0 && !isLoading && (
+                <div className="text-center py-12 text-muted-foreground">
+                    No products found.
+                </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>
   );
 }
+
