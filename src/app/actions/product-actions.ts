@@ -2,69 +2,37 @@
 'use server';
 
 import { addProduct, deleteProduct, updateProduct } from '@/lib/products';
-import { uploadImage } from '@/lib/storage';
 import { z } from 'zod';
+import { Product } from '@/lib/types';
 
 const cleanAndSplit = (input: string | undefined): string[] => {
     if (!input) return [];
     return input.split('\n').map(s => s.trim()).filter(Boolean);
 };
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
-const imageSchema = z
-    .any()
-    .refine((files) => files?.[0], 'An image is required.')
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    );
-
-const optionalImageSchema = z
-    .any()
-    .optional()
-    .refine((files) => !files || files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    );
-
-
 const BaseProductSchema = z.object({
-  name: z.string().min(5),
-  category: z.string().min(3),
-  description: z.string().min(10),
-  longDescription: z.string().min(20),
-  price: z.coerce.number().positive(),
-  salePrice: z.coerce.number().positive().optional().or(z.literal('')),
-  features: z.string().min(10),
+  name: z.string().min(5, 'Title must be at least 5 characters.'),
+  category: z.string().min(3, 'Category must be at least 3 characters.'),
+  description: z.string().min(10, 'Short description must be at least 10 characters.'),
+  longDescription: z.string().min(20, 'Long description must be at least 20 characters.'),
+  image: z.string().url('Please enter a valid image URL.'),
+  price: z.coerce.number().positive('Price must be a positive number.'),
+  salePrice: z.coerce.number().positive('Sale price must be a positive number.').optional().or(z.literal('')),
+  features: z.string().min(10, 'Please list at least one feature.'),
   requirements: z.string().optional(),
   rating: z.coerce.number().min(0).max(5),
   reviewCount: z.coerce.number().min(0),
 });
 
-const AddProductFormSchema = BaseProductSchema.extend({
-    image: imageSchema
-});
+type FormValues = z.infer<typeof BaseProductSchema>;
 
-const UpdateProductFormSchema = BaseProductSchema.extend({
-     image: optionalImageSchema
-});
-
-
-export async function addProductAction(values: z.infer<typeof AddProductFormSchema>) {
+export async function addProductAction(values: FormValues) {
     try {
-        const validatedData = AddProductFormSchema.parse(values);
-        const { salePrice, features, requirements, image, ...rest } = validatedData;
+        const validatedData = BaseProductSchema.parse(values);
+        const { salePrice, features, requirements, ...rest } = validatedData;
         
-        const file = image[0];
-        const imageUrl = await uploadImage(file, 'products');
-
-        const productData = {
+        const productData: Omit<Product, 'id'> = {
             ...rest,
-            image: imageUrl,
             features: cleanAndSplit(features),
             requirements: cleanAndSplit(requirements),
             ...(salePrice ? { salePrice } : {}),
@@ -82,22 +50,16 @@ export async function addProductAction(values: z.infer<typeof AddProductFormSche
     }
 }
 
-
-export async function updateProductAction(id: string, values: z.infer<typeof UpdateProductFormSchema>) {
+export async function updateProductAction(id: string, values: FormValues) {
     try {
-        const validatedData = UpdateProductFormSchema.parse(values);
-        const { salePrice, features, requirements, image, ...rest } = validatedData;
+        const validatedData = BaseProductSchema.parse(values);
+        const { salePrice, features, requirements, ...rest } = validatedData;
         
         const productData: Record<string, any> = {
             ...rest,
             features: cleanAndSplit(features),
             requirements: cleanAndSplit(requirements),
         };
-
-        if (image && image.length > 0) {
-            const file = image[0];
-            productData.image = await uploadImage(file, 'products');
-        }
 
         if (salePrice) {
             productData.salePrice = salePrice;

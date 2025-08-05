@@ -24,22 +24,12 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { addProductAction } from '@/app/actions/product-actions';
 
-
-const imageSchema = z
-    .any()
-    .refine((files): files is FileList => files instanceof FileList && files.length > 0, 'An image is required.')
-    .refine((files: FileList) => files[0].size <= 5000000, `Max file size is 5MB.`)
-    .refine(
-      (files: FileList) => ['image/jpeg', 'image/png', 'image/webp'].includes(files[0].type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    );
-
 const formSchema = z.object({
   name: z.string().min(5, 'Title must be at least 5 characters.'),
   category: z.string().min(3, 'Category must be at least 3 characters.'),
   description: z.string().min(10, 'Short description must be at least 10 characters.'),
   longDescription: z.string().min(20, 'Long description must be at least 20 characters.'),
-  image: imageSchema,
+  image: z.string().url('Please enter a valid image URL.'),
   price: z.coerce.number().positive('Price must be a positive number.'),
   salePrice: z.coerce.number().positive('Sale price must be a positive number.').optional().or(z.literal('')),
   features: z.string().min(10, 'Please list at least one feature.'),
@@ -60,6 +50,7 @@ export default function NewProductPage() {
       category: '',
       description: '',
       longDescription: '',
+      image: '',
       price: 0,
       salePrice: '',
       features: '',
@@ -173,24 +164,19 @@ export default function NewProductPage() {
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field: { onChange, value, ...rest } }) => (
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Image</FormLabel>
+                    <FormLabel>Product Image URL</FormLabel>
                     <FormControl>
                       <Input 
-                        type="file" 
-                        accept="image/png, image/jpeg, image/webp"
-                        onChange={(event) => {
-                          onChange(event.target.files);
-                        }}
-                        {...rest}
+                        placeholder="https://example.com/image.png"
+                        {...field}
                        />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
 
               <div className="grid md:grid-cols-2 gap-6">
                  <FormField

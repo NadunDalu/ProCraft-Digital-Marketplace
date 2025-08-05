@@ -29,22 +29,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { updateProductAction } from '@/app/actions/product-actions';
 import Image from 'next/image';
 
-const optionalImageSchema = z
-    .any()
-    .optional()
-    .refine((files): files is FileList | undefined => files === undefined || (files instanceof FileList && files.length > 0), 'Invalid file list.')
-    .refine((files) => !files || files.length === 0 || files[0].size <= 5000000, `Max file size is 5MB.`)
-    .refine(
-      (files) => !files || files.length === 0 || ['image/jpeg', 'image/png', 'image/webp'].includes(files[0].type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    );
-
 const formSchema = z.object({
   name: z.string().min(5, 'Title must be at least 5 characters.'),
   category: z.string().min(3, 'Category must be at least 3 characters.'),
   description: z.string().min(10, 'Short description must be at least 10 characters.'),
   longDescription: z.string().min(20, 'Long description must be at least 20 characters.'),
-  image: optionalImageSchema,
+  image: z.string().url('Please enter a valid image URL.'),
   price: z.coerce.number().positive('Price must be a positive number.'),
   salePrice: z.coerce.number().positive('Sale price must be a positive number.').optional().or(z.literal('')),
   features: z.string().min(10, 'Please list at least one feature.'),
@@ -59,8 +49,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,6 +57,7 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
       category: '',
       description: '',
       longDescription: '',
+      image: '',
       price: 0,
       salePrice: '',
       features: '',
@@ -76,6 +66,8 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
       reviewCount: 0,
     },
   });
+  
+  const imageUrl = form.watch('image');
 
   useEffect(() => {
     async function fetchProduct() {
@@ -95,19 +87,6 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     }
     fetchProduct();
   }, [params.id, form]);
-
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-        form.setValue('image', event.target.files as FileList);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImagePreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-        }
-    };
-
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -241,24 +220,24 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Image</FormLabel>
+                    <FormLabel>Product Image URL</FormLabel>
                      <FormControl>
                         <Input 
-                            type="file" 
-                            accept="image/png, image/jpeg, image/webp"
-                            onChange={handleImageChange}
+                            placeholder="https://example.com/image.png"
+                            {...field}
                         />
-                        </FormControl>
-                        <FormMessage />
-                    { (imagePreview || product?.image) && (
+                    </FormControl>
+                    <FormMessage />
+                    { imageUrl && (
                         <div className="mt-4">
                             <p className="text-sm text-muted-foreground mb-2">Image Preview:</p>
                              <Image 
-                                src={imagePreview || product!.image}
+                                src={imageUrl}
                                 alt="Image preview" 
                                 width={200}
                                 height={200}
                                 className="rounded-md object-cover"
+                                onError={(e) => e.currentTarget.style.display = 'none'}
                             />
                         </div>
                     )}
