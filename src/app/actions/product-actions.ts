@@ -15,20 +15,19 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const imageSchema = z
     .any()
-    .refine((files): files is FileList => files instanceof FileList && files.length > 0, 'An image is required.')
-    .refine((files: FileList) => files[0].size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((files) => files?.[0], 'An image is required.')
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
     .refine(
-      (files: FileList) => ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       'Only .jpg, .png, and .webp formats are supported.'
     );
 
 const optionalImageSchema = z
     .any()
     .optional()
-    .refine((files): files is FileList | undefined => files === undefined || (files instanceof FileList && files.length > 0), 'Invalid file list.')
-    .refine((files) => !files || files[0].size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine((files) => !files || files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
     .refine(
-      (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+      (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       'Only .jpg, .png, and .webp formats are supported.'
     );
 
