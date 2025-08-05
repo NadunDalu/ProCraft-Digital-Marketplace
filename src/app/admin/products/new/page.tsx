@@ -30,7 +30,14 @@ const formSchema = z.object({
   category: z.string().min(3, 'Category must be at least 3 characters.'),
   description: z.string().min(10, 'Short description must be at least 10 characters.'),
   longDescription: z.string().min(20, 'Long description must be at least 20 characters.'),
-  image: z.string().url('Must be a valid URL.'),
+  image: z
+    .custom<FileList>()
+    .refine((files) => files?.length > 0, 'An image is required.')
+    .refine((files) => files?.[0]?.size <= 5000000, `Max file size is 5MB.`)
+    .refine(
+      (files) => ['image/jpeg', 'image/png', 'image/webp'].includes(files?.[0]?.type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    ),
   price: z.coerce.number().positive('Price must be a positive number.'),
   salePrice: z.coerce.number().positive('Sale price must be a positive number.').optional().or(z.literal('')),
   features: z.string().min(10, 'Please list at least one feature.'),
@@ -51,7 +58,7 @@ export default function NewProductPage() {
       category: '',
       description: '',
       longDescription: '',
-      image: '',
+      image: undefined,
       price: 0,
       salePrice: '',
       features: '',
@@ -165,15 +172,19 @@ export default function NewProductPage() {
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field }) => (
+                render={({ field: { onChange, value, ...rest } }) => (
                   <FormItem>
-                    <FormLabel>Product Image URL</FormLabel>
+                    <FormLabel>Product Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://placehold.co/600x400.png" {...field} />
+                      <Input 
+                        type="file" 
+                        accept="image/png, image/jpeg, image/webp"
+                        onChange={(event) => {
+                          onChange(event.target.files);
+                        }}
+                        {...rest}
+                       />
                     </FormControl>
-                     <CardDescription>
-                        Use a service like <Link href="https://placehold.co" target="_blank" className="underline">placehold.co</Link> to generate placeholder images.
-                      </CardDescription>
                     <FormMessage />
                   </FormItem>
                 )}

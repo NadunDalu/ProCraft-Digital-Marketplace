@@ -2,6 +2,7 @@
 'use server';
 
 import { addProduct, deleteProduct, updateProduct } from '@/lib/products';
+import { uploadImage } from '@/lib/storage';
 import { z } from 'zod';
 
 const cleanAndSplit = (input: string | undefined): string[] => {
@@ -9,12 +10,14 @@ const cleanAndSplit = (input: string | undefined): string[] => {
     return input.split('\n').map(s => s.trim()).filter(Boolean);
 };
 
-const AddProductFormSchema = z.object({
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+const BaseProductSchema = z.object({
   name: z.string().min(5),
   category: z.string().min(3),
   description: z.string().min(10),
   longDescription: z.string().min(20),
-  image: z.string().url(),
   price: z.coerce.number().positive(),
   salePrice: z.coerce.number().positive().optional().or(z.literal('')),
   features: z.string().min(10),
@@ -23,15 +26,31 @@ const AddProductFormSchema = z.object({
   reviewCount: z.coerce.number().min(0),
 });
 
-const UpdateProductFormSchema = AddProductFormSchema;
+const AddProductFormSchema = BaseProductSchema.extend({
+    image: z.custom<FileList>()
+    .refine((files) => files?.length > 0, 'An image is required.')
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    ),
+});
+
+const UpdateProductFormSchema = BaseProductSchema.extend({
+     image: z.custom<FileList>().optional(),
+});
+
 
 export async function addProductAction(values: z.infer<typeof AddProductFormSchema>) {
     try {
         const validatedData = AddProductFormSchema.parse(values);
-        const { salePrice, features, requirements, ...rest } = validatedData;
+        const { salePrice, features, requirements, image, ...rest } = validatedData;
         
+        const imageUrl = await uploadImage(image[0], 'products');
+
         const productData = {
             ...rest,
+            image: imageUrl,
             features: cleanAndSplit(features),
             requirements: cleanAndSplit(requirements),
             ...(salePrice ? { salePrice } : {}),
@@ -44,6 +63,7 @@ export async function addProductAction(values: z.infer<typeof AddProductFormSche
         if (error instanceof z.ZodError) {
             return { success: false, error: error.errors.map(e => e.message).join(', ') };
         }
+        console.error(error);
         return { success: false, error: 'An unexpected error occurred.' };
     }
 }
@@ -52,7 +72,7 @@ export async function addProductAction(values: z.infer<typeof AddProductFormSche
 export async function updateProductAction(id: string, values: z.infer<typeof UpdateProductFormSchema>) {
     try {
         const validatedData = UpdateProductFormSchema.parse(values);
-        const { salePrice, features, requirements, ...rest } = validatedData;
+        const { salePrice, features, requirements, image, ...rest } = validatedData;
         
         const productData: Record<string, any> = {
             ...rest,
@@ -60,10 +80,13 @@ export async function updateProductAction(id: string, values: z.infer<typeof Upd
             requirements: cleanAndSplit(requirements),
         };
 
+        if (image && image.length > 0) {
+            productData.image = await uploadImage(image[0], 'products');
+        }
+
         if (salePrice) {
             productData.salePrice = salePrice;
         } else {
-            // Firestore specific: delete the field if it's empty
             const { firestore } = await import('firebase-admin');
             productData.salePrice = firestore.FieldValue.delete();
         }
