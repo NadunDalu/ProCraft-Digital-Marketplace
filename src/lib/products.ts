@@ -6,12 +6,14 @@ import { Product, ProductSchema, ProductsSchema } from '@/lib/types';
 import { revalidatePath } from 'next/cache';
 
 export async function getProducts(): Promise<Product[]> {
+    if (!db) throw new Error("Firestore not initialized");
     const snapshot = await db.collection('products').get();
     const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     return ProductsSchema.parse(products);
 }
 
 export async function getProductById(id: string): Promise<Product | undefined> {
+    if (!db) throw new Error("Firestore not initialized");
     const doc = await db.collection('products').doc(id).get();
     if (!doc.exists) {
         return undefined;
@@ -21,6 +23,7 @@ export async function getProductById(id: string): Promise<Product | undefined> {
 }
 
 export async function addProduct(productData: Omit<Product, 'id'>) {
+    if (!db) throw new Error("Firestore not initialized");
     const docRef = await db.collection('products').add(productData);
     revalidatePath('/admin/products');
     revalidatePath('/');
@@ -28,6 +31,7 @@ export async function addProduct(productData: Omit<Product, 'id'>) {
 }
 
 export async function updateProduct(id: string, productData: Partial<Omit<Product, 'id'>>) {
+    if (!db) throw new Error("Firestore not initialized");
     await db.collection('products').doc(id).update(productData);
     revalidatePath('/admin/products');
     revalidatePath(`/products/${id}`);
@@ -35,6 +39,7 @@ export async function updateProduct(id: string, productData: Partial<Omit<Produc
 }
 
 export async function deleteProduct(id: string) {
+    if (!db) throw new Error("Firestore not initialized");
     await db.collection('products').doc(id).delete();
     revalidatePath('/admin/products');
     revalidatePath('/');

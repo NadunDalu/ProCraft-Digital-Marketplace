@@ -5,7 +5,7 @@ import { getFirestore as getClientFirestore } from 'firebase/firestore';
 import { app } from '@/lib/firebase'; // Client-side app
 
 // Admin SDK initialization
-if (!getApps().length) {
+if (!getApps().length && process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     try {
         const serviceAccount = JSON.parse(
             process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
@@ -18,7 +18,7 @@ if (!getApps().length) {
     }
 }
 
-const db = getFirestore();
+const db = getApps().length ? getFirestore() : null;
 const clientDb = getClientFirestore(app);
 
 export { db, clientDb };
