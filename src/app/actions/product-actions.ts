@@ -13,6 +13,26 @@ const cleanAndSplit = (input: string | undefined): string[] => {
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
+const imageSchema = z
+    .any()
+    .refine((files): files is FileList => files instanceof FileList && files.length > 0, 'An image is required.')
+    .refine((files: FileList) => files[0].size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (files: FileList) => ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    );
+
+const optionalImageSchema = z
+    .any()
+    .optional()
+    .refine((files): files is FileList | undefined => files === undefined || (files instanceof FileList && files.length > 0), 'Invalid file list.')
+    .refine((files) => !files || files[0].size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    );
+
+
 const BaseProductSchema = z.object({
   name: z.string().min(5),
   category: z.string().min(3),
@@ -27,17 +47,11 @@ const BaseProductSchema = z.object({
 });
 
 const AddProductFormSchema = BaseProductSchema.extend({
-    image: z.custom<FileList>()
-    .refine((files) => files?.length > 0, 'An image is required.')
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    ),
+    image: imageSchema
 });
 
 const UpdateProductFormSchema = BaseProductSchema.extend({
-     image: z.custom<FileList>().optional(),
+     image: optionalImageSchema
 });
 
 
@@ -46,7 +60,8 @@ export async function addProductAction(values: z.infer<typeof AddProductFormSche
         const validatedData = AddProductFormSchema.parse(values);
         const { salePrice, features, requirements, image, ...rest } = validatedData;
         
-        const imageUrl = await uploadImage(image[0], 'products');
+        const file = image[0];
+        const imageUrl = await uploadImage(file, 'products');
 
         const productData = {
             ...rest,
@@ -81,7 +96,8 @@ export async function updateProductAction(id: string, values: z.infer<typeof Upd
         };
 
         if (image && image.length > 0) {
-            productData.image = await uploadImage(image[0], 'products');
+            const file = image[0];
+            productData.image = await uploadImage(file, 'products');
         }
 
         if (salePrice) {

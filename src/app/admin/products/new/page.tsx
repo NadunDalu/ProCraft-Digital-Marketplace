@@ -25,19 +25,21 @@ import { useState } from 'react';
 import { addProductAction } from '@/app/actions/product-actions';
 
 
+const imageSchema = z
+    .any()
+    .refine((files): files is FileList => files instanceof FileList && files.length > 0, 'An image is required.')
+    .refine((files: FileList) => files[0].size <= 5000000, `Max file size is 5MB.`)
+    .refine(
+      (files: FileList) => ['image/jpeg', 'image/png', 'image/webp'].includes(files[0].type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    );
+
 const formSchema = z.object({
   name: z.string().min(5, 'Title must be at least 5 characters.'),
   category: z.string().min(3, 'Category must be at least 3 characters.'),
   description: z.string().min(10, 'Short description must be at least 10 characters.'),
   longDescription: z.string().min(20, 'Long description must be at least 20 characters.'),
-  image: z
-    .custom<FileList>()
-    .refine((files) => files?.length > 0, 'An image is required.')
-    .refine((files) => files?.[0]?.size <= 5000000, `Max file size is 5MB.`)
-    .refine(
-      (files) => ['image/jpeg', 'image/png', 'image/webp'].includes(files?.[0]?.type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    ),
+  image: imageSchema,
   price: z.coerce.number().positive('Price must be a positive number.'),
   salePrice: z.coerce.number().positive('Sale price must be a positive number.').optional().or(z.literal('')),
   features: z.string().min(10, 'Please list at least one feature.'),
@@ -58,7 +60,6 @@ export default function NewProductPage() {
       category: '',
       description: '',
       longDescription: '',
-      image: undefined,
       price: 0,
       salePrice: '',
       features: '',
