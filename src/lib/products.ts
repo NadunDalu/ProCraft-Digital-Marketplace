@@ -1,52 +1,25 @@
 
 'use server';
 
-import { db } from '@/lib/firebase-db';
+import { products as allProducts } from '@/lib/data';
 import { Product, ProductSchema, ProductsSchema } from '@/lib/types';
-import { revalidatePath } from 'next/cache';
 
+// Simulate an async API call
 export async function getProducts(): Promise<Product[]> {
-    if (!db) throw new Error("Firestore not initialized");
-    const snapshot = await db.collection('products').get();
-    const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    return ProductsSchema.parse(products);
+    const products = ProductsSchema.parse(allProducts);
+    return new Promise(resolve => setTimeout(() => resolve(products), 200));
 }
 
+// Simulate an async API call
 export async function getProductById(id: string): Promise<Product | undefined> {
-    if (!db) throw new Error("Firestore not initialized");
-    const doc = await db.collection('products').doc(id).get();
-    if (!doc.exists) {
-        return undefined;
-    }
-    const product = { id: doc.id, ...doc.data() };
-    return ProductSchema.parse(product);
-}
-
-export async function addProduct(productData: Omit<Product, 'id'>) {
-    if (!db) throw new Error("Firestore not initialized");
-    const docRef = await db.collection('products').add(productData);
-    revalidatePath('/admin/products');
-    revalidatePath('/');
-    return docRef.id;
-}
-
-export async function updateProduct(id: string, productData: Partial<Omit<Product, 'id'>>) {
-    if (!db) throw new Error("Firestore not initialized");
-    await db.collection('products').doc(id).update(productData);
-    revalidatePath('/admin/products');
-    revalidatePath(`/products/${id}`);
-    revalidatePath('/');
-}
-
-export async function deleteProduct(id: string) {
-    if (!db) throw new Error("Firestore not initialized");
-    await db.collection('products').doc(id).delete();
-    revalidatePath('/admin/products');
-    revalidatePath('/');
+    const product = allProducts.find(p => p.id === id);
+    if (!product) return undefined;
+    const parsedProduct = ProductSchema.parse(product);
+    return new Promise(resolve => setTimeout(() => resolve(parsedProduct), 200));
 }
 
 export async function getCategories(): Promise<string[]> {
-  const products = await getProducts();
-  const categories = products.map(p => p.category);
-  return ['All', ...Array.from(new Set(categories))];
+  const categories = allProducts.map(p => p.category);
+  const uniqueCategories = ['All', ...Array.from(new Set(categories))];
+  return new Promise(resolve => setTimeout(() => resolve(uniqueCategories), 200));
 }

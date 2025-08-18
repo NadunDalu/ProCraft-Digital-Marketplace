@@ -2,7 +2,6 @@
 
 import { getProducts } from '@/lib/products';
 import ProductListings from '@/components/product-listings';
-import ProductRecommendations from '@/components/product-recommendations';
 import { Separator } from '@/components/ui/separator';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
@@ -27,10 +26,7 @@ export default async function Home() {
       <AddToHomeScreen />
 
       <ProductListings products={products} />
-      
-      <Separator className="my-12 bg-foreground/20" />
 
-      <ProductRecommendations />
     </div>
     <Footer />
     </>

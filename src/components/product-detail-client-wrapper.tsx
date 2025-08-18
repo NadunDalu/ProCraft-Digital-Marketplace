@@ -1,7 +1,8 @@
+
 'use client';
 
 import { useEffect } from 'react';
-import type { Product } from '@/lib/products';
+import type { Product } from '@/lib/types';
 import { Button } from './ui/button';
 import { ShoppingBag } from 'lucide-react';
 import Link from 'next/link';

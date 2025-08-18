@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { giveaways, winners } from '@/lib/data';
 
 const WINNER_BANNER_KEY = 'procraft-winner-banner';
 
@@ -34,17 +35,14 @@ export default function GiveawaysPage() {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    const storedData = localStorage.getItem(WINNER_BANNER_KEY);
-    if (storedData) {
-      setLatestWinner(JSON.parse(storedData));
-    } else {
-      // Set default if nothing is in local storage
-      setLatestWinner({
-        winnerName: 'John D.',
-        giveawayName: 'Canva Pro',
-        winnerImage: 'https://placehold.co/100x100.png'
-      });
-    }
+    // In a real app, you might fetch this from a CMS or have it stored differently.
+    // For this dummy data version, we'll just use the first winner from our data file.
+    const defaultWinner = winners[0];
+    setLatestWinner({
+      winnerName: defaultWinner.name,
+      giveawayName: defaultWinner.prize,
+      winnerImage: defaultWinner.avatar
+    });
     setIsLoading(false);
   }, []);
 
@@ -168,22 +166,3 @@ export default function GiveawaysPage() {
     </>
   );
 }
-
-const giveaways = [
-  {
-    id: 1,
-    title: 'Lifetime Canva Pro Subscription',
-    description: 'Win a lifetime subscription to Canva Pro and unlock your creative potential. Get access to millions of premium assets and tools to bring your ideas to life.',
-    image: 'https://placehold.co/800x400.png',
-    endDate: 'August 31, 2024',
-  },
-];
-
-const winners = [
-    { id: 1, name: 'John D.', prize: 'Canva Pro', avatar: 'https://placehold.co/100x100.png' },
-    { id: 2, name: 'Sarah L.', prize: 'CCNA Course', avatar: 'https://placehold.co/100x100.png' },
-    { id: 3, name: 'Mike R.', prize: 'ChatGPT Plus', avatar: 'https://placehold.co/100x100.png' },
-    { id: 4, name: 'Emily T.', prize: 'Full-Stack Course', avatar: 'https://placehold.co/100x100.png' },
-    { id: 5, name: 'Chris B.', prize: 'Try Hack Me', avatar: 'https://placehold.co/100x100.png' },
-    { id: 6, name: 'Jessica P.', prize: 'UI/UX Masterclass', avatar: 'https://placehold.co/100x100.png' },
-];
