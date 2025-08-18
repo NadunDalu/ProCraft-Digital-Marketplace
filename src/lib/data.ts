@@ -123,6 +123,26 @@ export const products = [
     ],
     rating: 4.9,
     reviewCount: 5400
+  },
+  {
+    id: '7',
+    name: 'Doctor Lite (1 Year)',
+    category: 'Healthcare',
+    description: 'Unleash your healthcare potential with a one-year subscription to Doctor Lite.',
+    longDescription: 'Doctor Lite is the ultimate healthcare tool for managing your medical practice. Get access to millions of premium stock photos, videos, audio, and graphics, plus advanced features like Brand Kit and Magic Resize.',
+    image: 'https://placehold.co/600x400.png',
+    price: 229.99,
+    features: [
+        '100+ million premium doctors, consultants, and specialists',
+        '610,000+ premium and free templates',
+        'Magic Resize and Background Remover',
+        '100GB of cloud storage'
+    ],
+    requirements: [
+        'A Doctor Lite (can be created for free)'
+    ],
+    rating: 4.9,
+    reviewCount: 100
   }
 ];
 
