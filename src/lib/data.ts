@@ -129,7 +129,7 @@ export const products = [
 export const giveaways = [
   {
     id: 1,
-    title: 'Lifetime Naadun Subscription',
+    title: 'Lifetime CISCO Subscription',
     description: 'Win a lifetime subscription to Canva Pro and unlock your creative potential. Get access to millions of premium assets and tools to bring your ideas to life.',
     image: 'https://placehold.co/800x400.png',
     endDate: 'August 31, 2024',
@@ -137,7 +137,7 @@ export const giveaways = [
 ];
 
 export const winners = [
-    { id: 1, name: 'John D.', prize: 'Canva Pro', avatar: 'https://placehold.co/100x100.png' },
+    { id: 1, name: 'Induwara Lakshan', prize: 'TryHack me', avatar: 'https://placehold.co/100x100.png' }, //latest winner banner details enter as id = 1 (This shown at the banner)
     { id: 2, name: 'Sarah L.', prize: 'CCNA Course', avatar: 'https://placehold.co/100x100.png' },
     { id: 3, name: 'Mike R.', prize: 'ChatGPT Plus', avatar: 'https://placehold.co/100x100.png' },
     { id: 4, name: 'Emily T.', prize: 'Full-Stack Course', avatar: 'https://placehold.co/100x100.png' },
