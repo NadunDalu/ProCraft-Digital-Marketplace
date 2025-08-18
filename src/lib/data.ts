@@ -129,7 +129,7 @@ export const products = [
 export const giveaways = [
   {
     id: 1,
-    title: 'Lifetime Canva Pro Subscription',
+    title: 'Lifetime Naadun Subscription',
     description: 'Win a lifetime subscription to Canva Pro and unlock your creative potential. Get access to millions of premium assets and tools to bring your ideas to life.',
     image: 'https://placehold.co/800x400.png',
     endDate: 'August 31, 2024',
