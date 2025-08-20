@@ -6,7 +6,8 @@ const ReviewSchema = z.object({
   name: z.string(),
   avatar: z.string().url(),
   rating: z.number().min(1).max(5),
-  review: z.string(),
+  review: z.string().optional(), // Make text review optional
+  reviewImage: z.string().url().optional(), // Add optional image review
 });
 
 export const ProductSchema = z.object({
