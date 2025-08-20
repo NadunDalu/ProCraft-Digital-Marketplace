@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import AddToHomeScreen from '@/components/add-to-home-screen';
+import CustomerReviews from '@/components/customer-reviews';
 
 export default async function Home() {
   const products = await getProducts();
@@ -28,6 +29,7 @@ export default async function Home() {
       <ProductListings products={products} />
 
     </div>
+    <CustomerReviews />
     <Footer />
     </>
   );

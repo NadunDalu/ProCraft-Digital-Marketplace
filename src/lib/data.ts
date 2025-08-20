@@ -164,3 +164,48 @@ export const winners = [
     { id: 5, name: 'Chris B.', prize: 'Try Hack Me', avatar: 'https://placehold.co/100x100.png' },
     { id: 6, name: 'Jessica P.', prize: 'UI/UX Masterclass', avatar: 'https://placehold.co/100x100.png' },
 ];
+
+export const reviews = [
+  {
+    id: 1,
+    name: 'Alex Johnson',
+    avatar: 'https://placehold.co/100x100.png',
+    review: 'The Full-Stack course was incredible! I went from knowing basic HTML to building full applications. Highly recommended for anyone serious about web development.',
+    rating: 5,
+  },
+  {
+    id: 2,
+    name: 'Maria Garcia',
+    avatar: 'https://placehold.co/100x100.png',
+    review: 'I loved the UI/UX Masterclass. The instructor was clear, and the projects were very practical. My design portfolio has never looked better.',
+    rating: 5,
+  },
+  {
+    id: 3,
+    name: 'David Smith',
+    avatar: 'https://placehold.co/100x100.png',
+    review: 'The TryHackMe voucher is fantastic value. I\'ve learned so much about cybersecurity in a fun, hands-on way. It\'s like a playground for ethical hackers.',
+    rating: 5,
+  },
+  {
+    id: 4,
+    name: 'Jessica Williams',
+    avatar: 'https://placehold.co/100x100.png',
+    review: 'Canva Pro has been a game-changer for my small business. I can create professional-looking marketing materials in minutes without any design skills.',
+    rating: 5,
+  },
+  {
+    id: 5,
+    name: 'Chen Wang',
+    avatar: 'https://placehold.co/100x100.png',
+    review: 'The CCNA course is very thorough and well-structured. The labs are especially helpful for understanding complex networking concepts. I feel confident for my exam.',
+    rating: 4,
+  },
+  {
+    id: 6,
+    name: 'Fatima Al-Fassi',
+    avatar: 'https://placehold.co/100x100.png',
+    review: 'The Prompt Engineering guide is a must-have for anyone using AI regularly. It\'s packed with clever tricks to get much more accurate and creative results.',
+    rating: 5,
+  },
+];
