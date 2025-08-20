@@ -36,7 +36,7 @@ export default function CustomerReviews() {
       >
         <CarouselContent>
           {reviews.map((review) => (
-            <CarouselItem key={review.id} className="md:basis-1/2">
+            <CarouselItem key={review.id} className="md:basis-1/2 lg:basis-1/3">
               <div className="p-4">
                 <Card className="h-full bg-card">
                   <CardContent className="flex flex-col items-center text-center p-6 gap-4">
