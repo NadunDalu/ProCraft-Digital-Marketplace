@@ -10,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import ProductDetailClientWrapper from '@/components/product-detail-client-wrapper';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import ProductReviews from '@/components/product-reviews';
 
 type ProductPageProps = {
   params: {
@@ -104,6 +105,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             )}
         </div>
+        {product.reviews && product.reviews.length > 0 && (
+            <div className="mt-12">
+                <ProductReviews reviews={product.reviews} />
+            </div>
+        )}
       </div>
       <Footer />
     </>

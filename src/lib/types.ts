@@ -1,6 +1,14 @@
 
 import { z } from 'zod';
 
+const ReviewSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  avatar: z.string().url(),
+  rating: z.number().min(1).max(5),
+  review: z.string(),
+});
+
 export const ProductSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -14,8 +22,10 @@ export const ProductSchema = z.object({
   requirements: z.array(z.string()).optional(),
   rating: z.number(),
   reviewCount: z.number(),
+  reviews: z.array(ReviewSchema).optional(),
 });
 
 export const ProductsSchema = z.array(ProductSchema);
 
 export type Product = z.infer<typeof ProductSchema>;
+export type Review = z.infer<typeof ReviewSchema>;

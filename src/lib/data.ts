@@ -21,6 +21,22 @@ export const products = [
     ],
     rating: 4.8,
     reviewCount: 1250,
+    reviews: [
+        {
+            id: 1,
+            name: 'Alex Johnson',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'The Full-Stack course was incredible! I went from knowing basic HTML to building full applications. Highly recommended for anyone serious about web development.',
+            rating: 5,
+        },
+        {
+            id: 4,
+            name: 'Emily T.',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'This course is worth every penny. The content is up-to-date and the instructor explains complex topics very well.',
+            rating: 5,
+        },
+    ]
   },
   {
     id: '2',
@@ -42,6 +58,22 @@ export const products = [
     ],
     rating: 4.9,
     reviewCount: 980,
+    reviews: [
+        {
+            id: 2,
+            name: 'Maria Garcia',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'I loved the UI/UX Masterclass. The instructor was clear, and the projects were very practical. My design portfolio has never looked better.',
+            rating: 5,
+        },
+        {
+            id: 6,
+            name: 'Jessica P.',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'A fantastic masterclass for anyone looking to get into UI/UX design. The community is also very supportive.',
+            rating: 5,
+        }
+    ]
   },
   {
     id: '3',
@@ -62,6 +94,22 @@ export const products = [
     ],
     rating: 4.7,
     reviewCount: 2300,
+    reviews: [
+        {
+            id: 3,
+            name: 'Mike R.',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'This guide is a game-changer. I\'m getting so much more out of ChatGPT now. The prompt library is gold.',
+            rating: 5,
+        },
+         {
+            id: 6,
+            name: 'Fatima Al-Fassi',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'The Prompt Engineering guide is a must-have for anyone using AI regularly. It\'s packed with clever tricks to get much more accurate and creative results.',
+            rating: 5,
+        },
+    ]
   },
    {
     id: '4',
@@ -81,7 +129,16 @@ export const products = [
         'Basic understanding of networking concepts is helpful but not required.'
     ],
     rating: 4.8,
-    reviewCount: 1800
+    reviewCount: 1800,
+    reviews: [
+        {
+            id: 5,
+            name: 'Chen Wang',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'The CCNA course is very thorough and well-structured. The labs are especially helpful for understanding complex networking concepts. I feel confident for my exam.',
+            rating: 4,
+        },
+    ]
   },
   {
     id: '5',
@@ -102,7 +159,16 @@ export const products = [
         'A web browser and internet connection'
     ],
     rating: 4.9,
-    reviewCount: 3100
+    reviewCount: 3100,
+     reviews: [
+        {
+            id: 3,
+            name: 'David Smith',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'The TryHackMe voucher is fantastic value. I\'ve learned so much about cybersecurity in a fun, hands-on way. It\'s like a playground for ethical hackers.',
+            rating: 5,
+        },
+    ]
   },
   {
     id: '6',
@@ -122,7 +188,16 @@ export const products = [
         'A Canva account (can be created for free)'
     ],
     rating: 4.9,
-    reviewCount: 5400
+    reviewCount: 5400,
+    reviews: [
+         {
+            id: 4,
+            name: 'Jessica Williams',
+            avatar: 'https://placehold.co/100x100.png',
+            review: 'Canva Pro has been a game-changer for my small business. I can create professional-looking marketing materials in minutes without any design skills.',
+            rating: 5,
+        },
+    ]
   },
   {
     id: '7',
