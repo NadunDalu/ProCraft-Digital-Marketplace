@@ -3,20 +3,12 @@
 
 import React from 'react';
 import { reviews } from '@/lib/data';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 import { Card, CardContent } from '@/components/ui/card';
 import { MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 
 export default function CustomerReviews() {
-  const plugin = React.useRef(
-    Autoplay({ delay: 2500, stopOnInteraction: true })
-  );
+  const duplicatedReviews = [...reviews, ...reviews];
 
   return (
     <div className="py-12">
@@ -24,34 +16,35 @@ export default function CustomerReviews() {
         <MessageCircle className="h-8 w-8 text-primary" />
         What Our Customers Say
       </h2>
-      <Carousel
-        plugins={[plugin.current]}
-        className="w-full max-w-6xl mx-auto"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
-        opts={{
-          align: 'start',
-          loop: true,
+      <div
+        className="w-full overflow-hidden"
+        style={{
+          maskImage:
+            'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
         }}
       >
-        <CarouselContent>
-          {reviews.map((review) => (
-            <CarouselItem key={review.id} className="md:basis-1/2 lg:basis-1/3">
-              <div className="p-4">
-                <Card className="h-full bg-card overflow-hidden">
-                  <CardContent className="p-0">
-                    {review.reviewImage && (
-                        <div className="relative w-full aspect-video">
-                            <Image src={review.reviewImage} alt={`Review from ${review.name}`} layout="fill" objectFit="cover" data-ai-hint="screenshot review" />
-                        </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
+        <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
+          {duplicatedReviews.map((review, index) => (
+            <div key={index} className="w-[400px] flex-shrink-0 p-4">
+              <Card className="h-full bg-card overflow-hidden">
+                <CardContent className="p-0">
+                  {review.reviewImage && (
+                    <div className="relative w-full aspect-video">
+                      <Image
+                        src={review.reviewImage}
+                        alt={`Review from ${review.name}`}
+                        layout="fill"
+                        objectFit="cover"
+                        data-ai-hint="screenshot review"
+                      />
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           ))}
-        </CarouselContent>
-      </Carousel>
+        </div>
+      </div>
     </div>
   );
 }
