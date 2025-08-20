@@ -36,6 +36,13 @@ export const products = [
             reviewImage: 'https://placehold.co/400x250.png',
             rating: 5,
         },
+        {
+            id: 7,
+            name: 'Ben Carter',
+            avatar: 'https://placehold.co/100x100.png',
+            reviewImage: 'https://placehold.co/400x250.png',
+            rating: 5,
+        },
     ]
   },
   {
@@ -67,8 +74,8 @@ export const products = [
             rating: 5,
         },
         {
-            id: 6,
-            name: 'Jessica P.',
+            id: 8,
+            name: 'Olivia Martinez',
             avatar: 'https://placehold.co/100x100.png',
             reviewImage: 'https://placehold.co/400x250.png',
             rating: 5,
@@ -109,6 +116,13 @@ export const products = [
             reviewImage: 'https://placehold.co/400x250.png',
             rating: 5,
         },
+        {
+            id: 9,
+            name: 'Chloe Kim',
+            avatar: 'https://placehold.co/100x100.png',
+            reviewImage: 'https://placehold.co/400x250.png',
+            rating: 4,
+        },
     ]
   },
    {
@@ -137,6 +151,13 @@ export const products = [
             avatar: 'https://placehold.co/100x100.png',
             reviewImage: 'https://placehold.co/400x250.png',
             rating: 4,
+        },
+        {
+            id: 10,
+            name: 'Liam Murphy',
+            avatar: 'https://placehold.co/100x100.png',
+            reviewImage: 'https://placehold.co/400x250.png',
+            rating: 5,
         },
     ]
   },
@@ -168,6 +189,13 @@ export const products = [
             reviewImage: 'https://placehold.co/400x250.png',
             rating: 5,
         },
+        {
+            id: 11,
+            name: 'Aisha Khan',
+            avatar: 'https://placehold.co/100x100.png',
+            reviewImage: 'https://placehold.co/400x250.png',
+            rating: 5,
+        },
     ]
   },
   {
@@ -193,6 +221,13 @@ export const products = [
          {
             id: 4,
             name: 'Jessica Williams',
+            avatar: 'https://placehold.co/100x100.png',
+            reviewImage: 'https://placehold.co/400x250.png',
+            rating: 5,
+        },
+        {
+            id: 12,
+            name: 'Kenji Tanaka',
             avatar: 'https://placehold.co/100x100.png',
             reviewImage: 'https://placehold.co/400x250.png',
             rating: 5,
@@ -279,6 +314,48 @@ export const reviews = [
   {
     id: 6,
     name: 'Fatima Al-Fassi',
+    avatar: 'https://placehold.co/100x100.png',
+    reviewImage: 'https://placehold.co/400x250.png',
+    rating: 5,
+  },
+  {
+    id: 7,
+    name: 'Ben Carter',
+    avatar: 'https://placehold.co/100x100.png',
+    reviewImage: 'https://placehold.co/400x250.png',
+    rating: 5,
+  },
+  {
+    id: 8,
+    name: 'Olivia Martinez',
+    avatar: 'https://placehold.co/100x100.png',
+    reviewImage: 'https://placehold.co/400x250.png',
+    rating: 5,
+  },
+  {
+    id: 9,
+    name: 'Chloe Kim',
+    avatar: 'https://placehold.co/100x100.png',
+    reviewImage: 'https://placehold.co/400x250.png',
+    rating: 4,
+  },
+  {
+    id: 10,
+    name: 'Liam Murphy',
+    avatar: 'https://placehold.co/100x100.png',
+    reviewImage: 'https://placehold.co/400x250.png',
+    rating: 5,
+  },
+  {
+    id: 11,
+    name: 'Aisha Khan',
+    avatar: 'https://placehold.co/100x100.png',
+    reviewImage: 'https://placehold.co/400x250.png',
+    rating: 5,
+  },
+  {
+    id: 12,
+    name: 'Kenji Tanaka',
     avatar: 'https://placehold.co/100x100.png',
     reviewImage: 'https://placehold.co/400x250.png',
     rating: 5,
