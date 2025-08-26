@@ -2,11 +2,11 @@
 export const products = [
   {
     id: '1',
-    name: 'Full-Stack Web Development Course',
+    name: 'Self-Learning Package for the CCNA v1.1 (200-301)',
     category: 'Online Courses',
-    description: 'Master front-end and back-end development with our comprehensive course.',
-    longDescription: 'This course covers everything from HTML/CSS and JavaScript basics to advanced topics like React, Node.js, and databases. You will build real-world projects and gain the skills needed to become a professional full-stack developer.',
-    image: 'https://placehold.co/600x400.png',
+    description: 'Our comprehensive Self-Learning Package for the CCNA v1.1 (200-301) exam is designed for your success.',
+    longDescription: 'This comprehensive self-learning package covers all the fundamental concepts for the CCNA 200-301 exam. You will dive deep into network fundamentals, network access, IP connectivity, IP services, security fundamentals, and an introduction to automation and programmability. This course is designed to provide you with the core skills needed to install, operate, and troubleshoot modern enterprise networks.',
+    image: 'public/images/ccna.svg',
     price: 99.99,
     salePrice: 79.99,
     features: [
