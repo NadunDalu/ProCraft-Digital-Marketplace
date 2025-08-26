@@ -6,18 +6,18 @@ export const products = [
     category: 'Online Courses',
     description: 'Our comprehensive Self-Learning Package for the CCNA v1.1 (200-301) exam is designed for your success.',
     longDescription: 'This comprehensive self-learning package covers all the fundamental concepts for the CCNA 200-301 exam. You will dive deep into network fundamentals, network access, IP connectivity, IP services, security fundamentals, and an introduction to automation and programmability. This course is designed to provide you with the core skills needed to install, operate, and troubleshoot modern enterprise networks.',
-    image: '/images/ccna.svg',
-    price: 99.99,
-    salePrice: 79.99,
+    image: '/images/ccna.jpg',
+    price: 25000,
+    salePrice: 12000,
     features: [
-      '30+ hours of video content',
-      'Hands-on projects and assignments',
-      'Access to a community of learners',
-      'Certificate of completion'
+      'All 3 official CCNA modules',
+      'A massive 58% discount on your CCNA exam fee',
+      'E-Certificates and official Digital Badges upon completion',
+      'Flexible, anytime access to all your learning resources'
     ],
     requirements: [
       'A computer with internet access',
-      'Basic computer literacy'
+      'Basic computer literacy with Networking knowledge'
     ],
     rating: 4.8,
     reviewCount: 1250,
