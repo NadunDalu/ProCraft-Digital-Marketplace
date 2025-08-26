@@ -4,10 +4,10 @@ import { z } from 'zod';
 const ReviewSchema = z.object({
   id: z.number(),
   name: z.string(),
-  avatar: z.string().url(),
+  avatar: z.string(),
   rating: z.number().min(1).max(5),
   review: z.string().optional(), // Make text review optional
-  reviewImage: z.string().url().optional(), // Add optional image review
+  reviewImage: z.string().optional(), // Add optional image review
 });
 
 export const ProductSchema = z.object({
@@ -16,7 +16,7 @@ export const ProductSchema = z.object({
   category: z.string(),
   description: z.string(),
   longDescription: z.string(),
-  image: z.string().url(),
+  image: z.string(),
   price: z.number(),
   salePrice: z.number().optional(),
   features: z.array(z.string()),
