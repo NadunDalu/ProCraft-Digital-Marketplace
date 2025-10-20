@@ -37,11 +37,13 @@ const formSchema = z.object({
     message: 'Please enter a valid email address.',
   }),
   receipt: z
-    .custom<FileList>()
-    .refine((files) => files !== null && files?.length > 0, 'Payment receipt is required.')
-    .refine((files) => files?.[0]?.size <= 5_000_000, `Max file size is 5MB.`)
+    .custom<FileList>((val) => val instanceof FileList, {
+      message: 'Payment receipt is required.',
+    })
+    .refine((files) => files && files.length > 0, 'Payment receipt is required.')
+    .refine((files) => !files || files[0].size <= 5_000_000, `Max file size is 5MB.`)
     .refine(
-      (files) => ['image/jpeg', 'image/png', 'application/pdf'].includes(files?.[0]?.type),
+      (files) => !files || ['image/jpeg', 'image/png', 'application/pdf'].includes(files[0].type),
       'Only .jpg, .png, and .pdf formats are supported.'
     ),
 });
@@ -61,7 +63,7 @@ export function PurchaseForm({ product, children }: PurchaseFormProps) {
     defaultValues: {
       name: '',
       email: '',
-      receipt: undefined
+  receipt: undefined as unknown as FileList | undefined
     },
   });
 
@@ -128,15 +130,14 @@ export function PurchaseForm({ product, children }: PurchaseFormProps) {
             <FormField
               control={form.control}
               name="receipt"
-              render={({ field: { onChange, ...fieldProps } }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Payment Receipt</FormLabel>
                   <FormControl>
-                    <Input 
-                      {...fieldProps}
+                    <Input
                       type="file"
                       accept="image/png, image/jpeg, application/pdf"
-                      onChange={(event) => onChange(event.target.files)}
+                      onChange={(event) => field.onChange(event.target.files as FileList)}
                       disabled={isSubmitting}
                       className="file:text-primary"
                     />

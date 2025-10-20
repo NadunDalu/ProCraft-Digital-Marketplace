@@ -14,13 +14,14 @@ type ProductCardProps = {
 export default function ProductCard({ product }: ProductCardProps) {
   const hasSale = product.salePrice !== undefined;
   const displayPrice = hasSale ? product.salePrice : product.price;
+  const cardSrc = product.cardImage ?? product.image;
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
       <CardHeader className="p-0 relative">
         <Link href={`/products/${product.id}`} aria-label={`View ${product.name}`}>
           <Image
-            src={product.image}
+            src={cardSrc}
             alt={product.name}
             width={600}
             height={400}

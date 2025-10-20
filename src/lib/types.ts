@@ -17,6 +17,7 @@ export const ProductSchema = z.object({
   description: z.string(),
   longDescription: z.string(),
   image: z.string(),
+  cardImage: z.string().optional(),
   price: z.number(),
   salePrice: z.number().optional(),
   features: z.array(z.string()),

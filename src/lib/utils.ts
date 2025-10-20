@@ -6,8 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-LK', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'LKR',
+    currencyDisplay: 'symbol',
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
   }).format(amount);
 }
