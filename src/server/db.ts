@@ -1,7 +1,6 @@
 // Server-only SQLite access with graceful fallback if better-sqlite3 is not installed.
 import fs from 'node:fs';
 import path from 'node:path';
-import { products as seedProducts } from '@/lib/data';
 
 type BetterSqlite3 = any;
 
@@ -63,38 +62,6 @@ function migrate(database: any) {
     }
   } catch {
     // ignore
-  }
-
-  // Seed if empty
-  const row = database.prepare('SELECT COUNT(1) as c FROM products').get();
-  if (row.c === 0) {
-    const insert = database.prepare(`
-      INSERT INTO products (
-        id,name,category,description,longDescription,image,cardImage,price,salePrice,features,requirements,rating,reviewCount
-      ) VALUES (
-        @id,@name,@category,@description,@longDescription,@image,@cardImage,@price,@salePrice,@features,@requirements,@rating,@reviewCount
-      )
-    `);
-    const tx = database.transaction((items: any[]) => {
-      for (const p of items) {
-        insert.run({
-          id: p.id,
-          name: p.name,
-          category: p.category,
-          description: p.description,
-          longDescription: p.longDescription,
-          image: p.image,
-          cardImage: (p as any).cardImage ?? null,
-          price: p.price,
-          salePrice: p.salePrice ?? null,
-          features: JSON.stringify(p.features ?? []),
-          requirements: JSON.stringify(p.requirements ?? []),
-          rating: p.rating ?? 0,
-          reviewCount: p.reviewCount ?? 0,
-        });
-      }
-    });
-    tx(seedProducts as any);
   }
 }
 
