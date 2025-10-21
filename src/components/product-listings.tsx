@@ -2,7 +2,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getCategories, type Product } from '@/lib/products';
+import { getCategories } from '@/lib/products';
+import type { Product } from '@/lib/types';
 import ProductCard from './product-card';
 import { Input } from './ui/input';
 import { Search } from 'lucide-react';

@@ -31,3 +31,12 @@ export const ProductsSchema = z.array(ProductSchema);
 
 export type Product = z.infer<typeof ProductSchema>;
 export type Review = z.infer<typeof ReviewSchema>;
+
+// Banners
+export const BannerSchema = z.object({
+  id: z.string(),
+  image: z.string(), // base64 data URL
+  createdAt: z.string().optional(),
+});
+export const BannersSchema = z.array(BannerSchema);
+export type Banner = z.infer<typeof BannerSchema>;

@@ -1,6 +1,7 @@
 
 
 import { getProducts } from '@/lib/products';
+import { getBanners } from '@/lib/banners';
 import ProductListings from '@/components/product-listings';
 import { Separator } from '@/components/ui/separator';
 import Header from '@/components/header';
@@ -9,7 +10,10 @@ import AddToHomeScreen from '@/components/add-to-home-screen';
 import CustomerReviews from '@/components/customer-reviews';
 
 export default async function Home() {
-  const products = await getProducts();
+  const [products, banners] = await Promise.all([
+    getProducts(),
+    getBanners(),
+  ]);
 
   return (
     <>
@@ -24,7 +28,7 @@ export default async function Home() {
         </p>
       </div>
 
-      <AddToHomeScreen />
+      <AddToHomeScreen banners={banners} />
 
       <ProductListings products={products} />
 

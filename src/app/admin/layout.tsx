@@ -27,7 +27,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Products">
-                  <Link href="/admin#products">Products</Link>
+                  <Link href="/admin/products">Products</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="Banners">
+                  <Link href="/admin/banners">Banners</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarSeparator />

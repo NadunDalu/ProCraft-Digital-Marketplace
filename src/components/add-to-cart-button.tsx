@@ -1,7 +1,7 @@
 'use client';
 
 import { useCart } from '@/hooks/use-cart';
-import type { Product } from '@/lib/products';
+import type { Product } from '@/lib/types';
 import { Button } from './ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';

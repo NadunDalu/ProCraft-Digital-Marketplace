@@ -19,50 +19,61 @@ const empty: Product = {
   reviews: [],
 };
 
-type AdminProductsProps = { items: Product[]; readOnly?: boolean };
-
-export default function AdminProducts({ items: initialItems, readOnly = false }: AdminProductsProps) {
-  const [items, setItems] = useState<Product[]>(initialItems);
+export default function AdminProducts() {
+  const [items, setItems] = useState<Product[]>([]);
   const [editing, setEditing] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function saveLocal(p: Product) {
-    if (!p.id) return;
-    setItems(prev => {
-      const exists = prev.some(i => i.id === p.id);
-      if (exists) return prev.map(i => (i.id === p.id ? p : i));
-      return [...prev, p];
-    });
-    setEditing(null);
+  async function load() {
+    setLoading(true);
+    const res = await fetch('/api/products', { cache: 'no-store' });
+    const data = await res.json();
+    setItems(data);
+    setLoading(false);
   }
 
-  function removeLocal(id: string) {
-    setItems(prev => prev.filter(i => i.id !== id));
+  useEffect(() => { load(); }, []);
+
+  async function save(p: Product) {
+    if (!p.id) return;
+    const exists = items.some(i => i.id === p.id);
+    if (exists) {
+      await fetch(`/api/products/${encodeURIComponent(p.id)}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) });
+    } else {
+      await fetch('/api/products', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p) });
+    }
+    setEditing(null);
+    await load();
+  }
+
+  async function remove(id: string) {
+    await fetch(`/api/products/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    await load();
   }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="font-semibold">Products</h2>
-        {readOnly ? (
-          <div className="text-xs text-muted-foreground">Read-only preview</div>
-        ) : (
-          <Dialog open={!!editing && !editing.id} onOpenChange={(open) => { if (!open) setEditing(null); }}>
-            <DialogTrigger asChild>
-              <button className="px-3 py-1 bg-primary text-white rounded" onClick={() => setEditing({ ...empty })}>New</button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-3xl">
-              <DialogHeader>
-                <DialogTitle>New Product</DialogTitle>
-                <DialogDescription>Create a new product for your catalog.</DialogDescription>
-              </DialogHeader>
-              {editing && !editing.id && (
-                <ProductEditor value={editing} onCancel={() => setEditing(null)} onSave={saveLocal} />
-              )}
-            </DialogContent>
-          </Dialog>
-        )}
+        <Dialog open={!!editing && !editing.id} onOpenChange={(open) => { if (!open) setEditing(null); }}>
+          <DialogTrigger asChild>
+            <button className="px-3 py-1 bg-primary text-white rounded" onClick={() => setEditing({ ...empty })}>New</button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>New Product</DialogTitle>
+              <DialogDescription>Create a new product for your catalog.</DialogDescription>
+            </DialogHeader>
+            {editing && !editing.id && (
+              <ProductEditor value={editing} onCancel={() => setEditing(null)} onSave={save} />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
-      <div className="overflow-x-auto">
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="overflow-x-auto">
         <table className="w-full border text-sm">
           <thead>
             <tr className="bg-muted">
@@ -70,7 +81,7 @@ export default function AdminProducts({ items: initialItems, readOnly = false }:
               <th className="p-2 border">Name</th>
               <th className="p-2 border">Price</th>
               <th className="p-2 border">Category</th>
-              {!readOnly && <th className="p-2 border">Actions</th>}
+                <th className="p-2 border">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -80,7 +91,6 @@ export default function AdminProducts({ items: initialItems, readOnly = false }:
                 <td className="p-2 border">{p.name}</td>
                 <td className="p-2 border">{p.price}</td>
                 <td className="p-2 border">{p.category}</td>
-                {!readOnly && (
                   <td className="p-2 border">
                     <Dialog open={!!editing && editing.id === p.id} onOpenChange={(open) => { if (!open) setEditing(null); }}>
                       <DialogTrigger asChild>
@@ -92,18 +102,18 @@ export default function AdminProducts({ items: initialItems, readOnly = false }:
                           <DialogDescription>Update product information.</DialogDescription>
                         </DialogHeader>
                         {editing && editing.id === p.id && (
-                          <ProductEditor value={editing} onCancel={() => setEditing(null)} onSave={saveLocal} />
+                          <ProductEditor value={editing} onCancel={() => setEditing(null)} onSave={save} />
                         )}
                       </DialogContent>
                     </Dialog>
-                    <button className="text-red-600 underline" onClick={() => removeLocal(p.id)}>Delete</button>
+                    <button className="text-red-600 underline" onClick={() => remove(p.id)}>Delete</button>
                   </td>
-                )}
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
+        </div>
+      )}
 
     </div>
   );

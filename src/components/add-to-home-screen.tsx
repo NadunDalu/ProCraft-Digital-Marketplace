@@ -1,5 +1,5 @@
 
-'use client';
+"use client";
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
@@ -10,42 +10,36 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import type { Banner } from '@/lib/types';
 
-export default function AddToHomeScreen() {
+export default function AddToHomeScreen({ banners }: { banners: Banner[] }) {
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 1500, stopOnInteraction: false, stopOnMouseEnter: true })
   );
 
-  const images = [
-    { src: 'https://placehold.co/1200x300.png', alt: 'Banner image 1', hint: 'abstract technology' },
-    { src: 'https://placehold.co/1200x300.png', alt: 'Banner image 2', hint: 'digital product' },
-    { src: 'https://placehold.co/1200x300.png', alt: 'Banner image 3', hint: 'online course' },
-  ];
+  if (!banners || banners.length === 0) return null;
 
   return (
     <div className="mb-12">
         <Carousel
           plugins={[plugin.current]}
           className="w-full"
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
           opts={{
             align: 'start',
             loop: true,
           }}
         >
           <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
+            {banners.map((b) => (
+              <CarouselItem key={b.id}>
                 <Card className="border-none relative overflow-hidden rounded-lg">
-                   <Image
-                      src={image.src}
-                      alt={image.alt}
-                      width={1200}
-                      height={300}
-                      className="w-full h-auto object-cover"
-                      data-ai-hint={image.hint}
-                    />
+                  <Image
+                    src={b.image}
+                    alt="Banner"
+                    width={1200}
+                    height={300}
+                    className="w-full h-auto object-cover"
+                  />
                 </Card>
               </CarouselItem>
             ))}

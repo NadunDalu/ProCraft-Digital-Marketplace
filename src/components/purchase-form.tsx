@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import type { Product } from '@/lib/products';
+import type { Product } from '@/lib/types';
 import {
   Dialog,
   DialogContent,
