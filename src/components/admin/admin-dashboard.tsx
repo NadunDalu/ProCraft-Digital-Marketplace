@@ -1,21 +1,13 @@
-"use client";
+import AdminProducts from './admin-products';
+import { getProducts } from '@/lib/products';
 
-import { useEffect, useState } from 'react';
-
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const items = await getProducts();
   return (
     <div className="space-y-6">
       <section id="products" className="p-4 border rounded">
-        <ProductsSection />
+        <AdminProducts items={items} readOnly />
       </section>
     </div>
   );
-}
-
-function ProductsSection() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
-  const Dynamic = require('./admin-products').default as typeof import('./admin-products').default;
-  return <Dynamic />;
 }
