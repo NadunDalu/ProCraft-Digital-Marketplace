@@ -1,8 +1,0 @@
-﻿src/server/giveawayRepo.ts(21,37): error TS2322: Type 'ObjectId' is not assignable to type 'Condition<string> | undefined'.
-  Type 'ObjectId' is not assignable to type 'FilterOperators<string | RegExp | BSONRegExp>'.
-    Types of property 'id' are incompatible.
-      Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'undefined'.
-src/server/winnerRepo.ts(25,37): error TS2322: Type 'ObjectId' is not assignable to type 'Condition<string> | undefined'.
-  Type 'ObjectId' is not assignable to type 'FilterOperators<string | RegExp | BSONRegExp>'.
-    Types of property 'id' are incompatible.
-      Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'undefined'.

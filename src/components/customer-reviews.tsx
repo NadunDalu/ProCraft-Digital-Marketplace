@@ -1,14 +1,26 @@
 
 'use client';
 
-import React from 'react';
-import { reviews } from '@/lib/data';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, MessageSquareQuote } from 'lucide-react';
 import Image from 'next/image';
 
 export default function CustomerReviews() {
-  const duplicatedReviews = [...reviews, ...reviews];
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/site-reviews')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setReviews([...data, ...data]); // duplicate for marquee
+        }
+      })
+      .catch(err => console.error("Failed to fetch reviews", err));
+  }, []);
+
+  if (reviews.length === 0) return null;
 
   return (
     <section className="relative py-20 overflow-hidden">
@@ -31,24 +43,30 @@ export default function CustomerReviews() {
         className="w-full overflow-hidden"
         style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}
       >
-        <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
-          {duplicatedReviews.map((review, index) => (
-            <div key={index} className="w-[380px] flex-shrink-0 p-3">
-              <div className="rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300">
-                {review.reviewImage && (
-                  <div className="relative w-full aspect-video">
+        <div className="flex w-max animate-marquee hover:[animation-play-state:paused] gap-6 px-3">
+          {reviews.map((review, index) => (
+            <div key={index} className="w-[380px] flex-shrink-0">
+              <div className="h-full rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col">
+                {review.image ? (
+                  <div className="relative w-full aspect-video border-b border-border/40">
                     <Image
-                      src={review.reviewImage}
+                      src={review.image}
                       alt={`Review from ${review.name}`}
                       fill
                       className="object-cover"
                       sizes="380px"
-                      data-ai-hint="screenshot review"
                     />
-                    {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
+                ) : (
+                  <div className="flex-grow p-6 flex flex-col justify-center bg-primary/5">
+                    <MessageSquareQuote className="h-8 w-8 text-primary/40 mb-3" />
+                    <p className="text-foreground/90 italic text-sm leading-relaxed mb-4">"{review.text}"</p>
+                  </div>
                 )}
+                <div className="p-4 bg-muted/20 border-t border-border/40">
+                  <p className="font-semibold text-sm truncate">— {review.name}</p>
+                </div>
               </div>
             </div>
           ))}

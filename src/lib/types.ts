@@ -49,6 +49,7 @@ export const GiveawaySchema = z.object({
   description: z.string(),
   image: z.string(),
   endDate: z.string(),
+  instructions: z.string().optional(),
 });
 export type Giveaway = z.infer<typeof GiveawaySchema>;
 
@@ -62,3 +63,13 @@ export const WinnerSchema = z.object({
   avatar: z.string().optional(),
 });
 export type Winner = z.infer<typeof WinnerSchema>;
+
+// Site Reviews
+export const SiteReviewSchema = z.object({
+  _id: z.string().optional(),
+  id: z.string().optional(),
+  name: z.string(),
+  text: z.string().optional(),
+  image: z.string().optional(),
+});
+export type SiteReview = z.infer<typeof SiteReviewSchema>;

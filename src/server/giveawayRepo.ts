@@ -20,3 +20,14 @@ export async function giveawaysDelete(id: string) {
         try { await col.deleteOne({ _id: new ObjectId(id) } as any); } catch { }
     }
 }
+
+export async function giveawaysUpdate(id: string, data: Partial<Giveaway>) {
+    const col = await getCollection<Giveaway>('giveaways');
+    const { _id, ...updateData } = data as any;
+
+    let result = await col.updateOne({ id } as any, { $set: updateData });
+    if (result.matchedCount === 0 && ObjectId.isValid(id)) {
+        result = await col.updateOne({ _id: new ObjectId(id) } as any, { $set: updateData });
+    }
+    return result;
+}

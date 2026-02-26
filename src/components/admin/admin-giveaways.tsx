@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Trophy, Plus, Trash2, Loader2, Gift, Medal, X, Calendar, ImageIcon } from 'lucide-react';
+import { Trophy, Plus, Trash2, Loader2, Gift, Medal, X, Calendar, ImageIcon, Pencil } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 /* ─── Types ─── */
@@ -12,6 +12,7 @@ type Giveaway = {
     description: string;
     image: string;
     endDate: string;
+    instructions?: string;
 };
 
 type Winner = {
@@ -77,8 +78,9 @@ export default function AdminGiveaways() {
     const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
     const [gLoading, setGLoading] = useState(false);
     const [showAddGiveaway, setShowAddGiveaway] = useState(false);
+    const [editingGiveawayId, setEditingGiveawayId] = useState<string | null>(null);
     const [newGiveaway, setNewGiveaway] = useState<Giveaway>({
-        title: '', description: '', image: '', endDate: '',
+        title: '', description: '', image: '', endDate: '', instructions: ''
     });
     const [giveawayImagePreview, setGiveawayImagePreview] = useState('');
     const [gSaving, setGSaving] = useState(false);
@@ -130,18 +132,22 @@ export default function AdminGiveaways() {
         }
         setGSaving(true);
         try {
-            const payload = { ...newGiveaway, id: crypto.randomUUID() };
-            const res = await fetch('/api/giveaways', {
-                method: 'POST',
+            const isEditing = !!editingGiveawayId;
+            const res = await fetch(isEditing ? `/api/giveaways/${encodeURIComponent(editingGiveawayId)}` : '/api/giveaways', {
+                method: isEditing ? 'PUT' : 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(isEditing ? newGiveaway : { ...newGiveaway, id: crypto.randomUUID() }),
             });
-            if (!res.ok) throw new Error('Failed to create giveaway');
-            toast({ title: '🎉 Giveaway created!' });
+            if (!res.ok) throw new Error(`Failed to ${isEditing ? 'update' : 'create'} giveaway`);
             setShowAddGiveaway(false);
-            setNewGiveaway({ title: '', description: '', image: '', endDate: '' });
+            setEditingGiveawayId(null);
+            setNewGiveaway({ title: '', description: '', image: '', endDate: '', instructions: '' });
             setGiveawayImagePreview('');
             await loadGiveaways();
+
+            setTimeout(() => {
+                toast({ title: `🎉 Giveaway ${isEditing ? 'updated' : 'created'}!` });
+            }, 100);
         } catch (e: any) {
             toast({ title: 'Error', description: e.message, variant: 'destructive' });
         } finally {
@@ -177,11 +183,14 @@ export default function AdminGiveaways() {
                 body: JSON.stringify(payload),
             });
             if (!res.ok) throw new Error('Failed to announce winner');
-            toast({ title: '🏆 Winner announced!' });
             setShowAddWinner(false);
             setNewWinner({ name: '', prize: '', avatar: '', giveawayId: '' });
             setWinnerAvatarPreview('');
             await loadWinners();
+
+            setTimeout(() => {
+                toast({ title: '🏆 Winner announced!' });
+            }, 100);
         } catch (e: any) {
             toast({ title: 'Error', description: e.message, variant: 'destructive' });
         } finally {
@@ -222,8 +231,8 @@ export default function AdminGiveaways() {
                         key={t}
                         onClick={() => setTab(t)}
                         className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${tab === t
-                                ? 'bg-card text-foreground shadow-sm'
-                                : 'text-muted-foreground hover:text-foreground'
+                            ? 'bg-card text-foreground shadow-sm'
+                            : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         {t === 'giveaways' ? <Gift className="h-4 w-4" /> : <Medal className="h-4 w-4" />}
@@ -237,7 +246,12 @@ export default function AdminGiveaways() {
                 <div className="space-y-4">
                     <div className="flex justify-end">
                         <button
-                            onClick={() => setShowAddGiveaway(true)}
+                            onClick={() => {
+                                setEditingGiveawayId(null);
+                                setNewGiveaway({ title: '', description: '', image: '', endDate: '', instructions: '' });
+                                setGiveawayImagePreview('');
+                                setShowAddGiveaway(true);
+                            }}
                             className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-primary/90 px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/25 transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-95"
                         >
                             <Plus className="h-4 w-4" /> New Giveaway
@@ -281,12 +295,25 @@ export default function AdminGiveaways() {
                                                     Ends: {g.endDate || 'TBD'}
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() => deleteGiveaway(g)}
-                                                className="shrink-0 flex h-8 w-8 items-center justify-center rounded-lg border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 transition-all"
-                                            >
-                                                <Trash2 className="h-3.5 w-3.5" />
-                                            </button>
+                                            <div className="flex gap-1 shrink-0">
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingGiveawayId(rowId(g));
+                                                        setNewGiveaway({ ...g });
+                                                        setGiveawayImagePreview(g.image || '');
+                                                        setShowAddGiveaway(true);
+                                                    }}
+                                                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-border/60 bg-card hover:border-primary/40 hover:text-primary hover:bg-primary/8 transition-all"
+                                                >
+                                                    <Pencil className="h-3.5 w-3.5" />
+                                                </button>
+                                                <button
+                                                    onClick={() => deleteGiveaway(g)}
+                                                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 transition-all"
+                                                >
+                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -376,7 +403,7 @@ export default function AdminGiveaways() {
 
             {/* ══════════════ ADD GIVEAWAY MODAL ══════════════ */}
             {showAddGiveaway && (
-                <Modal title="New Giveaway" onClose={() => setShowAddGiveaway(false)}>
+                <Modal title={editingGiveawayId ? "Edit Giveaway" : "New Giveaway"} onClose={() => setShowAddGiveaway(false)}>
                     <div className="space-y-4">
                         <Field label="Title *">
                             <input
@@ -394,10 +421,18 @@ export default function AdminGiveaways() {
                                 onChange={e => setNewGiveaway({ ...newGiveaway, description: e.target.value })}
                             />
                         </Field>
-                        <Field label="End Date *">
+                        <Field label="Instructions (optional)">
+                            <textarea
+                                className={`${inputCls} min-h-[80px] resize-y`}
+                                placeholder="e.g. Follow us on Twitter and retweet the pinned post"
+                                value={newGiveaway.instructions || ''}
+                                onChange={e => setNewGiveaway({ ...newGiveaway, instructions: e.target.value })}
+                            />
+                        </Field>
+                        <Field label="End Date & Time *">
                             <input
+                                type="datetime-local"
                                 className={inputCls}
-                                placeholder="e.g. December 31, 2025"
                                 value={newGiveaway.endDate}
                                 onChange={e => setNewGiveaway({ ...newGiveaway, endDate: e.target.value })}
                             />
@@ -436,8 +471,8 @@ export default function AdminGiveaways() {
                                 disabled={gSaving}
                                 className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-primary/90 py-2 text-sm font-semibold text-primary-foreground shadow-md disabled:opacity-50 transition-all hover:shadow-lg"
                             >
-                                {gSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-                                Create Giveaway
+                                {gSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : (editingGiveawayId ? <Pencil className="h-4 w-4" /> : <Plus className="h-4 w-4" />)}
+                                {editingGiveawayId ? "Save Changes" : "Create Giveaway"}
                             </button>
                         </div>
                     </div>
