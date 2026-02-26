@@ -148,22 +148,10 @@ function GiveawayCard({ giveaway }: { giveaway: any }) {
                     <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
                       <li>Create an account or log in to ProCraft.</li>
                       <li>Make sure your contact information is up to date.</li>
-                      <li>Click the <strong>Confirm Entry</strong> button below.</li>
                     </ul>
                   )}
                 </div>
               </div>
-
-              <DialogFooter className="mt-4 gap-2 sm:gap-0">
-                <DialogClose asChild>
-                  <Button variant="outline" className="w-full sm:w-auto">Cancel</Button>
-                </DialogClose>
-                <Button className="w-full sm:w-auto" onClick={() => {
-                  alert(`Successfully entered the giveaway for: ${giveaway.title}!\nWe will notify you via email if you win.`);
-                }}>
-                  <Gift className="mr-2 h-4 w-4" /> Confirm Entry
-                </Button>
-              </DialogFooter>
             </DialogContent>
           </Dialog>
         )}
