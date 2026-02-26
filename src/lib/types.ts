@@ -40,3 +40,25 @@ export const BannerSchema = z.object({
 });
 export const BannersSchema = z.array(BannerSchema);
 export type Banner = z.infer<typeof BannerSchema>;
+
+// Giveaways
+export const GiveawaySchema = z.object({
+  _id: z.string().optional(),
+  id: z.union([z.string(), z.number()]).optional(),
+  title: z.string(),
+  description: z.string(),
+  image: z.string(),
+  endDate: z.string(),
+});
+export type Giveaway = z.infer<typeof GiveawaySchema>;
+
+// Winners
+export const WinnerSchema = z.object({
+  _id: z.string().optional(),
+  id: z.union([z.string(), z.number()]).optional(),
+  giveawayId: z.union([z.string(), z.number()]).optional(),
+  name: z.string(),
+  prize: z.string(),
+  avatar: z.string().optional(),
+});
+export type Winner = z.infer<typeof WinnerSchema>;

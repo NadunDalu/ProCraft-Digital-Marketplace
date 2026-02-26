@@ -5,6 +5,7 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import { cn } from '@/lib/utils';
 import { CartProvider } from '@/hooks/use-cart';
+import { ThemeProvider } from '@/components/theme-provider';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
@@ -34,10 +35,17 @@ export default function RootLayout({
         )}
       >
         <CartProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
+          </ThemeProvider>
         </CartProvider>
         <Toaster />
-        <SpeedInsights/>
+        <SpeedInsights />
       </body>
     </html>
   );
