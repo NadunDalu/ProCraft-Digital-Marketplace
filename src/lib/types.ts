@@ -25,6 +25,7 @@ export const ProductSchema = z.object({
   rating: z.number(),
   reviewCount: z.number(),
   reviews: z.array(ReviewSchema).optional(),
+  whatsappMessage: z.string().optional(),
 });
 
 export const ProductsSchema = z.array(ProductSchema);

@@ -20,6 +20,7 @@ const empty: Product = {
   rating: 0,
   reviewCount: 0,
   reviews: [],
+  whatsappMessage: '',
 };
 
 const defaultCategories = ['Networking', 'Cybersecurity', 'Programming', 'AI'];
@@ -276,6 +277,7 @@ function ProductEditor({ value, onCancel, onSave, categories }: { value: Product
 
       <F id="desc" label="Short Description" area v={p.description} set={v => setP({ ...p, description: v })} />
       <F id="longdesc" label="Long Description" area v={p.longDescription} set={v => setP({ ...p, longDescription: v })} />
+      <F id="whatsappMessage" label="WhatsApp Pre-fill Message" hint="Sample message to pre-fill on WhatsApp when user clicks Buy Now." area v={p.whatsappMessage || ''} set={v => setP({ ...p, whatsappMessage: v })} />
 
       <F
         id="features"
