@@ -84,7 +84,7 @@ export default function Footer() {
       <div className="border-t border-border/40">
         <div className="container flex flex-col sm:flex-row items-center justify-between py-4 text-xs text-muted-foreground gap-2">
           <span>© {year ?? '...'} ProCraft Services. All rights reserved.</span>
-          <span className="opacity-50">Built with ❤️ for creators everywhere</span>
+          <span className="opacity-50">Built with 🤖 for Web by Cybor</span>
         </div>
       </div>
     </footer>
