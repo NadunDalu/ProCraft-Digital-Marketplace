@@ -1,5 +1,7 @@
 
 
+export const dynamic = 'force-dynamic';
+
 import { getProductById } from '@/lib/products';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -53,7 +55,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </Badge>
             )}
             <h1 className="font-headline text-3xl md:text-4xl font-bold">{product.name}</h1>
-            
+
             <div className="flex items-center mt-3 text-muted-foreground">
               <div className="flex items-center gap-0.5 text-amber-500">
                 {[...Array(5)].map((_, i) => (
@@ -81,35 +83,35 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mt-12">
+          <div className="bg-card rounded-lg p-6 shadow-lg text-card-foreground">
+            <h3 className="font-headline text-2xl font-semibold mb-4">Features</h3>
+            <ul className="space-y-3">
+              {product.features.map((feature, index) => (
+                <li key={index} className="flex items-start">
+                  <CheckCircle2 className="h-5 w-5 text-green-500 mr-3 mt-1 shrink-0" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {product.requirements && (
             <div className="bg-card rounded-lg p-6 shadow-lg text-card-foreground">
-              <h3 className="font-headline text-2xl font-semibold mb-4">Features</h3>
+              <h3 className="font-headline text-2xl font-semibold mb-4">Requirements</h3>
               <ul className="space-y-3">
-                {product.features.map((feature, index) => (
+                {product.requirements.map((req, index) => (
                   <li key={index} className="flex items-start">
                     <CheckCircle2 className="h-5 w-5 text-green-500 mr-3 mt-1 shrink-0" />
-                    <span>{feature}</span>
+                    <span>{req}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            {product.requirements && (
-               <div className="bg-card rounded-lg p-6 shadow-lg text-card-foreground">
-                <h3 className="font-headline text-2xl font-semibold mb-4">Requirements</h3>
-                <ul className="space-y-3">
-                  {product.requirements.map((req, index) => (
-                    <li key={index} className="flex items-start">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 mr-3 mt-1 shrink-0" />
-                      <span>{req}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          )}
         </div>
         {product.reviews && product.reviews.length > 0 && (
-            <div className="mt-12">
-                <ProductReviews reviews={product.reviews} />
-            </div>
+          <div className="mt-12">
+            <ProductReviews reviews={product.reviews} />
+          </div>
         )}
       </div>
       <Footer />
