@@ -13,8 +13,8 @@ const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const contacts = [
   { icon: Mail, label: 'Email', value: 'support@procraft.com' },
-  { icon: Phone, label: 'Phone', value: '+1 (555) 123-4567' },
-  { icon: MapPin, label: 'Address', value: '123 Digital Lane, Tech City, 45678' },
+  { icon: Phone, label: 'Phone', value: '+94 78 559 3170' },
+  { icon: MapPin, label: 'Address', value: 'Colombo, Sri Lanka' },
 ];
 
 const socials = [
